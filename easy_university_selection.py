@@ -60,7 +60,7 @@ def load_score_line(code, region):
     sls = {}  # year:region:subject:tier score
     for file in files:
         f = open('./resource/score_line/' + code + '/' + file)
-        iter_f = iter(f);  # 创建迭代器
+        iter_f = iter(f)  # 创建迭代器
         for line in iter_f:
             line = ''.join(line.split())
             arr = line.split(",")
