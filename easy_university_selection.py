@@ -458,6 +458,9 @@ if __name__ == "__main__":
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
     universityList = filterUniversity(year, regionCode, artsOrScienceCode, score, scoreLines, provinceScores,
                                       universityInfoDict)
+
+    print '筛选结果如下，结果将保存到./resource/result.xlsx'
+    print '-----------------------------------------------------------------------------------------------------'
     title = '学校\t地区\t类别\t类别排名\t热度排名\t入取成功预测值（1-9）\t 最高分\t最低分\t平均分\t年份'
     print title
     print '-----------------------------------------------------------------------------------------------------'
