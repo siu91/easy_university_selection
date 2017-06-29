@@ -453,7 +453,7 @@ if __name__ == "__main__":
     print '载入[' + codeRegionDict[regionCode] + ']地区' + '历年高考分数线'
     scoreLines = load_score_line(regionCode, regionCodeDict)
     # 各学校入取分数
-    print '载入全国高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[artsOrScienceCode] + ']历年入取分数线'
+    print '载入全国高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[artsOrScienceCode] + ']历年录取分数线'
     provinceScores = load_prince_score(regionCode, artsOrScienceCode)
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
     universityList = filterUniversity(year, regionCode, artsOrScienceCode, score, scoreLines, provinceScores,
