@@ -254,6 +254,8 @@ def init_spider(path):
 def spider_university_score_line(universityInfo, regionCode, subject, tier):
     url404 = init_spider('./resource/spider_files/' + regionCode + '_404.url')
     hasSpider = init_spider('./resource/spider_files/' + regionCode + '_spider.url')
+    url404Size = len(url404)
+    hasSpiderSize = len(hasSpider)
     urlBase = 'http://gkcx.eol.cn/schoolhtm/scores/provinceScores[university_code]_' + regionCode + '_' + subject + '_' + tier + '.xml'
     for k in universityInfo:
         url = urlBase.replace('[university_code]', universityInfo[k].code)
@@ -277,19 +279,21 @@ def spider_university_score_line(universityInfo, regionCode, subject, tier):
         xmlFile.close()
         # print res
 
-    wr = ''
-    for u in url404:
-        wr = wr + u + '\n'
-    f = open('./resource/spider_files/' + regionCode + '_404.url', 'w')  # 文件句柄（放到了内存什么位置）
-    f.write(str(wr))  # 写入内容，如果没有该文件就自动创建
-    f.close()  # (关闭文件)
+    if not len(url404) == url404Size:
+        wr = ''
+        for u in url404:
+            wr = wr + u + '\n'
+        f = open('./resource/spider_files/' + regionCode + '_404.url', 'w')  # 文件句柄（放到了内存什么位置）
+        f.write(str(wr))  # 写入内容，如果没有该文件就自动创建
+        f.close()  # (关闭文件)
 
-    wr = ''
-    for u in hasSpider:
-        wr = wr + u + '\n'
-    f = open('./resource/spider_files/' + regionCode + '_spider.url', 'w')  # 文件句柄（放到了内存什么位置）
-    f.write(str(wr))  # 写入内容，如果没有该文件就自动创建
-    f.close()  # (关闭文件)
+    if not len(hasSpider) == hasSpiderSize:
+        wr = ''
+        for u in hasSpider:
+            wr = wr + u + '\n'
+        f = open('./resource/spider_files/' + regionCode + '_spider.url', 'w')  # 文件句柄（放到了内存什么位置）
+        f.write(str(wr))  # 写入内容，如果没有该文件就自动创建
+        f.close()  # (关闭文件)
 
 
 def filterUniversity(year, region, subject, score, scoreLines, provinceScores, universityInfoDict):
@@ -297,7 +301,7 @@ def filterUniversity(year, region, subject, score, scoreLines, provinceScores, u
     # 粗暴的算法
     # 计算 考生的分数在今年高考划线的比值
     # 如 该生文科393 ，2017 划线 489,380,300 ，比值分别是393/489=0.803,393/380=1.034,393/300=1.31
-    # 2016 年 划线 501,403,319,预估得分为(501*0.803+403*1.034+319*1.31)/3=412.3,预估该生在2016分数为412.3
+    # 2016 年 划线 501,403,319,评估得分为(501*0.803+403*1.034+319*1.31)/3=412.3,评估该生在2016分数为412.3
     year = int(year)
     rate1 = score / float(scoreLines[str(year) + ',' + region + ',' + subject + ',10036'].score)
     rate2 = score / float(scoreLines[str(year) + ',' + region + ',' + subject + ',10037'].score)
@@ -306,16 +310,16 @@ def filterUniversity(year, region, subject, score, scoreLines, provinceScores, u
     last1 = (scoreLines[str(year - 1) + ',' + region + ',' + subject + ',10036'].score * rate1 + scoreLines[
         str(year - 1) + ',' + region + ',' + subject + ',10037'].score * rate2 + scoreLines[
                  str(year - 1) + ',' + region + ',' + subject + ',10038'].score * rate3) / 3
-    print '预估' + str(year - 1) + '分数为：' + str(last1)
+    print '评估' + str(year - 1) + '分数为：' + str(last1)
     last2 = (scoreLines[str(year - 2) + ',' + region + ',' + subject + ',10036'].score * rate1 + scoreLines[
         str(year - 2) + ',' + region + ',' + subject + ',10037'].score * rate2 + scoreLines[
                  str(year - 2) + ',' + region + ',' + subject + ',10038'].score * rate3) / 3
-    print '预估' + str(year - 2) + '分数为：' + str(last2)
+    print '评估' + str(year - 2) + '分数为：' + str(last2)
     last3 = (scoreLines[str(year - 3) + ',' + region + ',' + subject + ',10036'].score * rate1 + scoreLines[
         str(year - 3) + ',' + region + ',' + subject + ',10037'].score * rate2 + scoreLines[
                  str(year - 3) + ',' + region + ',' + subject + ',10038'].score * rate3) / 3
-    print '预估' + str(year - 3) + '分数为：' + str(last3)
-    print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+    print '评估' + str(year - 3) + '分数为：' + str(last3)
+    print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 
     result = []
     schoolSet = set()
@@ -424,10 +428,12 @@ if __name__ == "__main__":
     year = sys.argv[4]  # 年份
     # tierCode = sys.argv[3]  # tier_code 本科层次（一本，二本，三本，提前，专科）
     print '年份：' + year
-    print  '地区：' + codeRegionDict[regionCode]
-    print '考生分数：' + sys.argv[3]
-    print customCodeDict[artsOrScienceCode]
-    print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+    print '地区：' + codeRegionDict[regionCode]
+    print '分数：' + sys.argv[3] + ' ' + customCodeDict[artsOrScienceCode]
+    if not filterTier == '':
+        for f in filterTier:
+            print '过滤：' + customCodeDict[f]
+    print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
     regionCodeDict = init_region_code()
     codeRegionDict = init_code_region()
     customCodeDict = initCustomCode()
@@ -449,18 +455,19 @@ if __name__ == "__main__":
     # 各学校入取分数
     print '载入全国高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[artsOrScienceCode] + ']历年入取分数线'
     provinceScores = load_prince_score(regionCode, artsOrScienceCode)
-    print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+    print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
     universityList = filterUniversity(year, regionCode, artsOrScienceCode, score, scoreLines, provinceScores,
                                       universityInfoDict)
     title = '学校\t地区\t类别\t类别排名\t热度排名\t入取成功预测值（1-9）\t 最高分\t最低分\t平均分\t年份'
     print title
+    print '-----------------------------------------------------------------------------------------------------'
     # 筛选结果保存到xls
     # 在内存中创建一个workbook对象，而且会至少创建一个 worksheet
     wb = Workbook()
     # 获取当前活跃的worksheet,默认就是第一个worksheet
     ws = wb.active
     titles = title.split('\t')
-    for i in range(1, len(titles)):
+    for i in range(1, len(titles) + 1):
         ws.cell(row=1, column=i).value = titles[i - 1]
 
     row = 2
@@ -472,7 +479,7 @@ if __name__ == "__main__":
             u.maxScore) + '\t' + str(u.minScore) + '\t' + str(u.avgScore) + '\t' + str(u.year)
         print colContent
         colContents = colContent.split('\t')
-        for col in range(1, len(titles)):
+        for col in range(1, len(titles) + 1):
             ws.cell(row=row, column=col).value = colContents[col - 1]
         row = row + 1
         # 保存
