@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+   <scores>
+	         	          	<score>
+	              <year>2012</year>
+	              <maxScore>462</maxScore>
+	              <avgScore>--</avgScore>
+	              <minScore>251</minScore>
+	              <ps></ps>
+	              <fc>0</fc>
+	              <rb>专科</rb>
+	              <rs>0</rs>
+	               <ph>1794</ph>
+	              </score>
+	          	<score>
+	              <year>2011</year>
+	              <maxScore>480</maxScore>
+	              <avgScore>--</avgScore>
+	              <minScore>332</minScore>
+	              <ps></ps>
+	              <fc>-325</fc>
+	              <rb>专科</rb>
+	              <rs>0</rs>
+	               <ph>1794</ph>
+	              </score>
+   </scores>

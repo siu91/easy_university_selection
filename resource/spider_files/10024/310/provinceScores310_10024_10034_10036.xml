@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+   <scores>
+	         	          	<score>
+	              <year>2012</year>
+	              <maxScore>591</maxScore>
+	              <avgScore>582</avgScore>
+	              <minScore>--</minScore>
+	              <ps>557</ps>
+	              <fc>25</fc>
+	              <rb>一批</rb>
+	              <rs>8</rs>
+	               <ph>22</ph>
+	              </score>
+	          	<score>
+	              <year>2011</year>
+	              <maxScore>598</maxScore>
+	              <avgScore>588</avgScore>
+	              <minScore>--</minScore>
+	              <ps>564</ps>
+	              <fc>24</fc>
+	              <rb>一批</rb>
+	              <rs>7</rs>
+	               <ph>22</ph>
+	              </score>
+   </scores>

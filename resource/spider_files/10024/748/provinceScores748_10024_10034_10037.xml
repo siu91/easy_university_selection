@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+   <scores>
+	         	          	<score>
+	              <year>2015</year>
+	              <maxScore>503</maxScore>
+	              <avgScore>495</avgScore>
+	              <minScore>--</minScore>
+	              <ps>462</ps>
+	              <fc>33</fc>
+	              <rb>二批</rb>
+	              <rs>5</rs>
+	               <ph>889</ph>
+	              </score>
+	          	<score>
+	              <year>2014</year>
+	              <maxScore>--</maxScore>
+	              <avgScore>500</avgScore>
+	              <minScore>--</minScore>
+	              <ps>482</ps>
+	              <fc>18</fc>
+	              <rb>二批</rb>
+	              <rs>0</rs>
+	               <ph>889</ph>
+	              </score>
+   </scores>
