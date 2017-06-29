@@ -292,9 +292,9 @@ def spider_university_score_line(universityInfo, regionCode, subject, tier):
 
 
 def filterUniversity(year, region, subject, score, scoreLines, provinceScores, universityInfoDict):
-    # 预估换算该学生在往年的分数
+    # 换算该学生在往年的分数
     # 粗暴的算法
-    # 计算 学生的分数在今天划线的比值
+    # 计算 考生的分数在今年高考划线的比值
     # 如 该生文科393 ，2017 划线 489,380,300 ，比值分别是393/489=0.803,393/380=1.034,393/300=1.31
     # 2016 年 划线 501,403,319,预估得分为(501*0.803+403*1.034+319*1.31)/3=412.3,预估该生在2016分数为412.3
     year = int(year)
