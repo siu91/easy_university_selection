@@ -7,7 +7,6 @@ import xml.sax
 from xml.dom.minidom import parse
 import xml.dom.minidom
 from openpyxl import Workbook
-from openpyxl.utils import get_column_letter
 
 
 class ScoreLine:
@@ -303,21 +302,30 @@ def filterUniversity(year, region, subject, score, scoreLines, provinceScores, u
     # 如 该生文科393 ，2017 划线 489,380,300 ，比值分别是393/489=0.803,393/380=1.034,393/300=1.31
     # 2016 年 划线 501,403,319,评估得分为(501*0.803+403*1.034+319*1.31)/3=412.3,评估该生在2016分数为412.3
     year = int(year)
-    rate1 = score / float(scoreLines[str(year) + ',' + region + ',' + subject + ',10036'].score)
-    rate2 = score / float(scoreLines[str(year) + ',' + region + ',' + subject + ',10037'].score)
-    rate3 = score / float(scoreLines[str(year) + ',' + region + ',' + subject + ',10038'].score)  # 福建地区没有三本划线，取专科划线
+    score1 = scoreLines[str(year) + ',' + region + ',' + subject + ',10036'].score
+    score2 = scoreLines[str(year) + ',' + region + ',' + subject + ',10037'].score
+    score3 = scoreLines[str(year) + ',' + region + ',' + subject + ',10038'].score
+    tier = ''
+    if score > score3:
+        tier = '10038'
+        if score > score2:
+            tier = '10037'
+            if score > score1:
+                tier = '10036'
+    if '' == tier:
+        print 'error....'
+        return
 
-    last1 = (scoreLines[str(year - 1) + ',' + region + ',' + subject + ',10036'].score * rate1 + scoreLines[
-        str(year - 1) + ',' + region + ',' + subject + ',10037'].score * rate2 + scoreLines[
-                 str(year - 1) + ',' + region + ',' + subject + ',10038'].score * rate3) / 3
+    rate1 = score / float(score1)
+    rate2 = score / float(score2)
+    rate3 = score / float(score3)  # 福建地区没有三本划线，取专科划线
+
+    # 改进算法，分数所在批次权重为0.7,其他为0.15
+    last1 = evaluate_score(year, region, subject, tier, 1, rate1, rate2, rate3)
     print '评估' + str(year - 1) + '分数为：' + str(last1)
-    last2 = (scoreLines[str(year - 2) + ',' + region + ',' + subject + ',10036'].score * rate1 + scoreLines[
-        str(year - 2) + ',' + region + ',' + subject + ',10037'].score * rate2 + scoreLines[
-                 str(year - 2) + ',' + region + ',' + subject + ',10038'].score * rate3) / 3
+    last2 = evaluate_score(year, region, subject, tier, 2, rate1, rate2, rate3)
     print '评估' + str(year - 2) + '分数为：' + str(last2)
-    last3 = (scoreLines[str(year - 3) + ',' + region + ',' + subject + ',10036'].score * rate1 + scoreLines[
-        str(year - 3) + ',' + region + ',' + subject + ',10037'].score * rate2 + scoreLines[
-                 str(year - 3) + ',' + region + ',' + subject + ',10038'].score * rate3) / 3
+    last3 = evaluate_score(year, region, subject, tier, 3, rate1, rate2, rate3)
     print '评估' + str(year - 3) + '分数为：' + str(last3)
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 
@@ -378,6 +386,26 @@ def filterUniversity(year, region, subject, score, scoreLines, provinceScores, u
         ps.hot = universityInfoDict[ps.school].hot
         result.append(ps)
     return result
+
+
+def evaluate_score(year, region, subject, tier, n, rate1, rate2, rate3):
+    last1score1 = 0
+    if '10036' == tier:
+        last1score1 = scoreLines[str(year - n) + ',' + region + ',' + subject + ',10036'].score * rate1 * 0.7
+    else:
+        last1score1 = scoreLines[str(year - n) + ',' + region + ',' + subject + ',10036'].score * rate1 * 0.15
+    last1score2 = 0
+    if '10037' == tier:
+        last1score2 = scoreLines[str(year - n) + ',' + region + ',' + subject + ',10037'].score * rate2 * 0.7
+    else:
+        last1score2 = scoreLines[str(year - n) + ',' + region + ',' + subject + ',10037'].score * rate2 * 0.15
+    last1score3 = 0
+    if '10038' == tier:
+        last1score3 = scoreLines[str(year - n) + ',' + region + ',' + subject + ',10038'].score * rate3 * 0.7
+    else:
+        last1score3 = scoreLines[str(year - n) + ',' + region + ',' + subject + ',10038'].score * rate3 * 0.15
+
+    return last1score1 + last1score2 + last1score3
 
 
 def initCustomCode():
@@ -461,7 +489,7 @@ if __name__ == "__main__":
 
     print '筛选结果如下，结果将保存到./resource/result.xlsx'
     print '-----------------------------------------------------------------------------------------------------'
-    title = '学校\t地区\t类别\t类别排名\t热度排名\t入取成功预测值（1-9）\t 最高分\t最低分\t平均分\t年份'
+    title = '学校\t地区\t类别\t类别排名\t热度排名\t入取成功预测值（1-9）\t 最高分\t最低分\t平均分\t批次\t年份'
     print title
     print '-----------------------------------------------------------------------------------------------------'
     # 筛选结果保存到xls
@@ -479,7 +507,8 @@ if __name__ == "__main__":
         colContent = universityInfoDict[u.school].name + '\t' + universityInfoDict[u.school].region + '\t' + \
                      universityInfoDict[u.school].classes + '\t' + str(
             universityInfoDict[u.school].classRank) + '\t' + str(u.hot) + '\t' + str(u.hope) + '\t' + str(
-            u.maxScore) + '\t' + str(u.minScore) + '\t' + str(u.avgScore) + '\t' + str(u.year)
+            u.maxScore) + '\t' + str(u.minScore) + '\t' + str(u.avgScore) + '\t' + customCodeDict[u.tier] + '\t' + str(
+            u.year)
         print colContent
         colContents = colContent.split('\t')
         for col in range(1, len(titles) + 1):
