@@ -2,11 +2,12 @@
 
 import sys
 import os
-import urllib
 import urllib2
 import xml.sax
 from xml.dom.minidom import parse
 import xml.dom.minidom
+from openpyxl import Workbook
+from openpyxl.utils import get_column_letter
 
 
 class ScoreLine:
@@ -451,10 +452,28 @@ if __name__ == "__main__":
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
     universityList = filterUniversity(year, regionCode, artsOrScienceCode, score, scoreLines, provinceScores,
                                       universityInfoDict)
-    print '学校\t地区\t类别\t类别排名\t热度排名\t入取成功预测值（1-9）\t 最高分\t最低分\t平均分\t年份'
+    title = '学校\t地区\t类别\t类别排名\t热度排名\t入取成功预测值（1-9）\t 最高分\t最低分\t平均分\t年份'
+    print title
+    # 筛选结果保存到xls
+    # 在内存中创建一个workbook对象，而且会至少创建一个 worksheet
+    wb = Workbook()
+    # 获取当前活跃的worksheet,默认就是第一个worksheet
+    ws = wb.active
+    titles = title.split('\t')
+    for i in range(1, len(titles)):
+        ws.cell(row=1, column=i).value = titles[i - 1]
+
+    row = 2
     for u in universityList:
         if u.tier in filterTier: continue
-        print universityInfoDict[u.school].name + '\t' + universityInfoDict[u.school].region + '\t' + \
-              universityInfoDict[u.school].classes + '\t' + str(
+        colContent = universityInfoDict[u.school].name + '\t' + universityInfoDict[u.school].region + '\t' + \
+                     universityInfoDict[u.school].classes + '\t' + str(
             universityInfoDict[u.school].classRank) + '\t' + str(u.hot) + '\t' + str(u.hope) + '\t' + str(
             u.maxScore) + '\t' + str(u.minScore) + '\t' + str(u.avgScore) + '\t' + str(u.year)
+        print colContent
+        colContents = colContent.split('\t')
+        for col in range(1, len(titles)):
+            ws.cell(row=row, column=col).value = colContents[col - 1]
+        row = row + 1
+        # 保存
+    wb.save(filename="./resource/result.xlsx")
