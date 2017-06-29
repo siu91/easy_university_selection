@@ -53,7 +53,7 @@ class UniversityInfo:
     code = ''
 
 
-#  载入所有年份的分数线
+# 载入所有年份的分数线
 def load_score_line(code, region):
     files = os.listdir('./resource/score_line/' + code)
     sls = {}  # year:region:subject:tier score
@@ -180,7 +180,7 @@ def load_prince_score(regionCode, artsOrScienceCode):
                     # 学校 年份 福建 文科 批次 = 清华大学2016年在福建地区文科第一批次招生分数线
                     key = path + ',' + year + ',' + regionCode + ',' + artsOrScienceCode + ',' + tierCode
                     scoreFile = scoreFile + key + ',' + str(ps.maxScore) + ',' + str(ps.minScore) + ',' + str(
-                    ps.avgScore) + '\n'
+                        ps.avgScore) + '\n'
                     pss[key] = ps
 
     f = open(scorePath, 'w')  # 文件句柄（放到了内存什么位置）
@@ -410,7 +410,7 @@ if __name__ == "__main__":
     regionCodeDict = init_region_code()
     codeRegionDict = init_code_region()
     customCodeDict = initCustomCode()
-    #print str(len(sys.argv))
+    # print str(len(sys.argv))
     if len(sys.argv) < 5:
         help(regionCodeDict)
     filterTier = ''
@@ -451,8 +451,10 @@ if __name__ == "__main__":
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
     universityList = filterUniversity(year, regionCode, artsOrScienceCode, score, scoreLines, provinceScores,
                                       universityInfoDict)
-    print '学校\t热度排名\t入取成功预测值（1-9）\t 最高分\t最低分\t平均分\t年份'
+    print '学校\t地区\t类别\t类别排名\t热度排名\t入取成功预测值（1-9）\t 最高分\t最低分\t平均分\t年份'
     for u in universityList:
         if u.tier in filterTier: continue
-        print universityInfoDict[u.school].name + '\t' + str(u.hot) + '\t' + str(u.hope) + '\t' + str(
+        print universityInfoDict[u.school].name + '\t' + universityInfoDict[u.school].region + '\t' + \
+              universityInfoDict[u.school].classes + '\t' + str(
+            universityInfoDict[u.school].classRank) + '\t' + str(u.hot) + '\t' + str(u.hope) + '\t' + str(
             u.maxScore) + '\t' + str(u.minScore) + '\t' + str(u.avgScore) + '\t' + str(u.year)
