@@ -1,0 +1,2 @@
+# easy_university_selection
+一个抓取全国高校历年在各地区的入取分数线的项目，用于高考学生筛选学校
