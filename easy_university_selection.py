@@ -53,11 +53,6 @@ class UniversityInfo:
     code = ''
 
 
-# TODO 获取当前年份的分数线
-def get_score_line(year, tier):
-    return
-
-
 #  载入所有年份的分数线
 def load_score_line(code, region):
     files = os.listdir('./resource/score_line/' + code)
@@ -182,11 +177,11 @@ def load_prince_score(regionCode, artsOrScienceCode):
                     ps.school = path
                     ps.subject = artsOrScienceCode
 
-                # 学校 年份 福建 文科 批次 = 清华大学2016年在福建地区文科第一批次招生分数线
-                key = path + ',' + year + ',' + regionCode + ',' + artsOrScienceCode + ',' + tierCode
-                scoreFile = scoreFile + key + ',' + str(ps.maxScore) + ',' + str(ps.minScore) + ',' + str(
+                    # 学校 年份 福建 文科 批次 = 清华大学2016年在福建地区文科第一批次招生分数线
+                    key = path + ',' + year + ',' + regionCode + ',' + artsOrScienceCode + ',' + tierCode
+                    scoreFile = scoreFile + key + ',' + str(ps.maxScore) + ',' + str(ps.minScore) + ',' + str(
                     ps.avgScore) + '\n'
-                pss[key] = ps
+                    pss[key] = ps
 
     f = open(scorePath, 'w')  # 文件句柄（放到了内存什么位置）
     f.write(scoreFile.encode('utf-8'))  # 写入内容，如果没有该文件就自动创建
