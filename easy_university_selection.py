@@ -419,7 +419,7 @@ def spider_score_line(save_path, spider_url, xml_name, tier):
 
 
 # 筛选高校
-def filter_university():
+def filter_university(scores):
     year_int = int(year)
 
     last1 = evaluate_score[year_int - 1]
@@ -428,61 +428,69 @@ def filter_university():
 
     result = []
     school_set = set()
-    for k in provinceScores:
-        ps = provinceScores[k]
+    for k in scores:
+        s = scores[k]
         is_filter = True
-        if ps.school in school_set: continue
-        if not subject == ps.subject: continue
-        if ps.minScore == 0 and ps.avgScore == 0 and ps.maxScore == 0: continue
+        if s.school in school_set: continue
+        if not subject == s.subject: continue
+        if s.minScore == 0 and s.avgScore == 0 and s.maxScore == 0: continue
         hope = 0
-        if not ps.minScore == 0:
-            if ps.year == year_int - 1:
-                if last1 > ps.minScore:
+        if not s.minScore == 0:
+            if s.year == year_int - 1:
+                if last1 > s.minScore:
                     is_filter = False
                     hope = 3
-            elif ps.year == year_int - 2:
-                if last2 > ps.minScore:
+            elif s.year == year_int - 2:
+                if last2 > s.minScore:
                     is_filter = False
                     hope = 2
-            elif ps.year == year_int - 3:
-                if last3 > ps.minScore:
+            elif s.year == year_int - 3:
+                if last3 > s.minScore:
                     is_filter = False
                     hope = 1
 
-        if not ps.avgScore == 0:
-            if ps.year == year_int - 1:
-                if last1 > ps.avgScore:
+        if not s.avgScore == 0:
+            if s.year == year_int - 1:
+                if last1 > s.avgScore:
                     is_filter = False
                     hope = 6
-            elif ps.year == year_int - 2:
-                if last2 > ps.avgScore:
+            elif s.year == year_int - 2:
+                if last2 > s.avgScore:
                     is_filter = False
                     hope = 5
-            elif ps.year == year_int - 3:
-                if last3 > ps.avgScore:
+            elif s.year == year_int - 3:
+                if last3 > s.avgScore:
                     is_filter = False
                     hope = 4
 
-        if not ps.maxScore == 0:
-            if ps.year == year_int - 1:
-                if last1 > ps.maxScore:
+        if not s.maxScore == 0:
+            if s.year == year_int - 1:
+                if last1 > s.maxScore:
                     is_filter = False
                     hope = 9
-            elif ps.year == year_int - 2:
-                if last2 > ps.maxScore:
+            elif s.year == year_int - 2:
+                if last2 > s.maxScore:
                     is_filter = False
                     hope = 8
-            elif ps.year == year_int - 3:
-                if last3 > ps.maxScore:
+            elif s.year == year_int - 3:
+                if last3 > s.maxScore:
                     is_filter = False
                     hope = 7
 
         if is_filter: continue
-        school_set.add(ps.school + str(ps.year))
-        ps.hope = hope
-        ps.hot = universityInfoDict[ps.school].hot
-        result.append(ps)
+        school_set.add(s.school + str(s.year))
+        s.hope = hope
+        s.hot = universityInfoDict[s.school].hot
+        result.append(s)
     return result
+
+
+def filter_university_by_major_score():
+    return filter_university(majorScores)
+
+
+def filter_university_by_province_score():
+    return filter_university(provinceScores)
 
 
 def evaluate_three_year_score():
@@ -566,7 +574,7 @@ def save_xlsx():
         ws.cell(row=1, column=i).value = column_names[i - 1]
 
     row = 2
-    for u in universityList:
+    for u in universityListByProvinceScore:
         if u.tier in filterTier: continue
         colContent = universityInfoDict[u.school].name + '\t' + universityInfoDict[u.school].region + '\t' + \
                      universityInfoDict[u.school].classes + '\t' + str(
@@ -651,17 +659,17 @@ if __name__ == "__main__":
     print '抓取高校库中所有高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']专业分数线'
     spider_university_major_score_line()
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
-    # 历年分数线
     print '载入[' + codeRegionDict[regionCode] + ']地区历年高考划线'
-    scoreLines = load_score_line()
-    # 各学校入取分数
+    scoreLines = load_score_line() # 历年分数线
     print '载入全国高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']历年录取分数线'
-    provinceScores = load_province_score()
-    majorScores = load_major_score()
+    provinceScores = load_province_score() # 各学校入取分数
+    print '载入全国高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']历年录取专业分数线'
+    majorScores = load_major_score() # 各学校各专业录取分数
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
     # 评估分数
     evaluate_score = evaluate_three_year_score()
     # 筛选高校
-    universityList = filter_university()
+    universityListByProvinceScore = filter_university_by_province_score()
+    universityListByMajorScore = filter_university_by_major_score()
     # 保存到 xlsx
     save_xlsx()
