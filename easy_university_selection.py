@@ -132,7 +132,7 @@ def load_province_score():
         files = os.listdir('./resource/spider_files/' + regionCode + '/' + path)
         for sFile in files:
             if not os.path.isdir(sFile):
-                if not subject in sFile: continue
+                if not (subject in sFile): continue
                 print sFile
                 dom = xml.dom.minidom.parse('./resource/spider_files/' + regionCode + '/' + path + '/' + sFile)
                 root = dom.documentElement
@@ -336,6 +336,7 @@ def filter_university():
     rate3 = score / float(score3)  # 福建地区没有三本划线，取专科划线
 
     # 改进算法，分数所在批次权重为0.7,其他为0.15
+    # TODO 考虑结合一分一段排名表来评估分数，暂时没有找到数据，待完成
     last1 = evaluate_score(year_int, regionCode, subject, tier, 1, rate1, rate2, rate3)
     print '评估' + str(year_int - 1) + '分数为：' + str(last1)
     last2 = evaluate_score(year_int, regionCode, subject, tier, 2, rate1, rate2, rate3)
