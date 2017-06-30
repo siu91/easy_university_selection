@@ -408,14 +408,8 @@ def evaluate_score(year, region, subject, tier, n, rate1, rate2, rate3):
 
 
 def init_custom_code():
-    code = {}
-    code['10035'] = '理科'
-    code['10034'] = '文科'
-    code['10036'] = '一本'
-    code['10037'] = '二本'
-    code['10038'] = '三本'
-    code['10148'] = '专科'
-    return code
+    code_dict = {'10035': '理科', '10034': '文科', '10036': '一本', '10037': '二本', '10038': '三本', '10148': '专科'}
+    return code_dict
 
 
 def help(region):
