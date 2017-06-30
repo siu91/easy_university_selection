@@ -330,40 +330,13 @@ def spider_score_line(save_path, spider_url, xml_name, tier):
         tmp_file.close()  # (关闭文件)
 
 
+# 筛选高校
 def filter_university():
-    # 换算该学生在往年的分数
-    # 粗暴的算法
-    # 计算 考生的分数在今年高考划线的比值
-    # 如 该生文科393 ，2017 划线 489,380,300 ，比值分别是393/489=0.803,393/380=1.034,393/300=1.31
-    # 2016 年 划线 501,403,319,评估得分为(501*0.803+403*1.034+319*1.31)/3=412.3,评估该生在2016分数为412.3
     year_int = int(year)
-    score1 = scoreLines[str(year_int) + ',' + regionCode + ',' + subject + ',10036'].score
-    score2 = scoreLines[str(year_int) + ',' + regionCode + ',' + subject + ',10037'].score
-    score3 = scoreLines[str(year_int) + ',' + regionCode + ',' + subject + ',10038'].score
-    tier = ''
-    if score > score3:
-        tier = '10038'
-        if score > score2:
-            tier = '10037'
-            if score > score1:
-                tier = '10036'
-    # if '' == tier:
-    #   print 'error....'
-    #   return
 
-    rate1 = score / float(score1)
-    rate2 = score / float(score2)
-    rate3 = score / float(score3)  # 福建地区没有三本划线，取专科划线
-
-    # 改进算法，分数所在批次权重为0.7,其他为0.15
-    # TODO 考虑结合一分一段排名表来评估分数，暂时没有找到数据，待完成
-    last1 = evaluate_score(year_int, regionCode, subject, tier, 1, rate1, rate2, rate3)
-    print '评估' + str(year_int - 1) + '分数为：' + str(last1)
-    last2 = evaluate_score(year_int, regionCode, subject, tier, 2, rate1, rate2, rate3)
-    print '评估' + str(year_int - 2) + '分数为：' + str(last2)
-    last3 = evaluate_score(year_int, regionCode, subject, tier, 3, rate1, rate2, rate3)
-    print '评估' + str(year_int - 3) + '分数为：' + str(last3)
-    print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+    last1 = evaluate_score[year_int - 1]
+    last2 = evaluate_score[year_int - 2]
+    last3 = evaluate_score[year_int - 3]
 
     result = []
     school_set = set()
@@ -421,6 +394,50 @@ def filter_university():
         ps.hope = hope
         ps.hot = universityInfoDict[ps.school].hot
         result.append(ps)
+    return result
+
+
+def evaluate_three_year_score():
+    # 换算该学生在往年的分数
+    # 粗暴的算法
+    # 计算 考生的分数在今年高考划线的比值
+    # 如 该生文科393 ，2017 划线 489,380,300 ，比值分别是393/489=0.803,393/380=1.034,393/300=1.31
+    # 2016 年 划线 501,403,319,评估得分为(501*0.803+403*1.034+319*1.31)/3=412.3,评估该生在2016分数为412.3
+    result = {}
+    year_int = int(year)
+    score1 = scoreLines[str(year_int) + ',' + regionCode + ',' + subject + ',10036'].score
+    score2 = scoreLines[str(year_int) + ',' + regionCode + ',' + subject + ',10037'].score
+    score3 = scoreLines[str(year_int) + ',' + regionCode + ',' + subject + ',10038'].score
+    tier = ''
+    if score > score3:
+        tier = '10038'
+        if score > score2:
+            tier = '10037'
+            if score > score1:
+                tier = '10036'
+    # if '' == tier:
+    #   print 'error....'
+    #   return
+
+    rate1 = score / float(score1)
+    rate2 = score / float(score2)
+    rate3 = score / float(score3)  # 福建地区没有三本划线，取专科划线
+
+    # 改进算法，分数所在批次权重为0.7,其他为0.15
+    # TODO 考虑结合一分一段排名表来评估分数，暂时没有找到数据，待完成
+    last1 = evaluate_score(year_int, regionCode, subject, tier, 1, rate1, rate2, rate3)
+    result[year_int - 1] = last1
+    print '评估' + str(year_int - 1) + '分数为：' + str(last1)
+
+    last2 = evaluate_score(year_int, regionCode, subject, tier, 2, rate1, rate2, rate3)
+    result[year_int - 2] = last2
+    print '评估' + str(year_int - 2) + '分数为：' + str(last2)
+
+    last3 = evaluate_score(year_int, regionCode, subject, tier, 3, rate1, rate2, rate3)
+    result[year_int - 3] = last3
+    print '评估' + str(year_int - 3) + '分数为：' + str(last3)
+    print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+
     return result
 
 
@@ -550,6 +567,8 @@ if __name__ == "__main__":
     print '载入全国高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']历年录取分数线'
     provinceScores = load_province_score()
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+    # 评估分数
+    evaluate_score = evaluate_three_year_score()
     # 筛选高校
     universityList = filter_university()
     # 保存到 xlsx
