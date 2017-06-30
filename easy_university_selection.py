@@ -32,6 +32,7 @@ from openpyxl import Workbook
 import pickle
 
 
+# 分数划线
 class ScoreLine:
     def __init__(self):
         pass
@@ -43,6 +44,7 @@ class ScoreLine:
     score = 0
 
 
+# 省入取分数
 class ProvinceScore:
     def __init__(self):
         pass
@@ -59,6 +61,7 @@ class ProvinceScore:
     hot = 0
 
 
+# 高校信息
 class UniversityInfo:
     def __init__(self):
         pass
@@ -136,8 +139,8 @@ def load_province_score():
                 print sFile
                 dom = xml.dom.minidom.parse('./resource/spider_files/' + regionCode + '/' + path + '/' + sFile)
                 root = dom.documentElement
-                scores = root.getElementsByTagName("score")
-                for score_element in scores:
+                score_elements = root.getElementsByTagName("score")
+                for score_element in score_elements:
                     # print score.nodeName
                     year_node = score_element.getElementsByTagName("year")[0]
                     y = ''
@@ -185,7 +188,7 @@ def load_province_score():
                         ps.avgScore) + '\n'
                     pss[key] = ps
 
-    tmp_file = open(score_path, 'w')  # 文件句柄（放到了内存什么位置）
+    tmp_file = open(score_path, 'w')
     tmp_file.write(score_file.encode('utf-8'))  # 写入内容，如果没有该文件就自动创建
     tmp_file.close()  # (关闭文件)
     with open(score_path, 'wb') as pickle_file:
@@ -297,7 +300,7 @@ def spider_university_score_line(tier):
         wr = ''
         for U in url404:
             wr = wr + U + '\n'
-        tmp_file = open('./resource/spider_files/' + regionCode + '_404.url', 'w')  # 文件句柄（放到了内存什么位置）
+        tmp_file = open('./resource/spider_files/' + regionCode + '_404.url', 'w')  
         tmp_file.write(str(wr))  # 写入内容，如果没有该文件就自动创建
         tmp_file.close()  # (关闭文件)
 
@@ -305,7 +308,7 @@ def spider_university_score_line(tier):
         wr = ''
         for U in has_spider:
             wr = wr + U + '\n'
-        tmp_file = open('./resource/spider_files/' + regionCode + '_spider.url', 'w')  # 文件句柄（放到了内存什么位置）
+        tmp_file = open('./resource/spider_files/' + regionCode + '_spider.url', 'w')  
         tmp_file.write(str(wr))  # 写入内容，如果没有该文件就自动创建
         tmp_file.close()  # (关闭文件)
 
