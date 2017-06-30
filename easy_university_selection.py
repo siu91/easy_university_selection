@@ -480,13 +480,12 @@ if __name__ == "__main__":
     print title
     print '-----------------------------------------------------------------------------------------------------'
     # 筛选结果保存到xls
-    # 在内存中创建一个workbook对象，而且会至少创建一个 worksheet
     wb = Workbook()
     # 获取当前活跃的worksheet,默认就是第一个worksheet
     ws = wb.active
-    titles = title.split('\t')
-    for i in range(1, len(titles) + 1):
-        ws.cell(row=1, column=i).value = titles[i - 1]
+    columnNames = title.split('\t')
+    for i in range(1, len(columnNames) + 1):
+        ws.cell(row=1, column=i).value = columnNames[i - 1]
 
     row = 2
     for u in universityList:
@@ -497,9 +496,9 @@ if __name__ == "__main__":
             u.maxScore) + '\t' + str(u.minScore) + '\t' + str(u.avgScore) + '\t' + customCodeDict[u.tier] + '\t' + str(
             u.year)
         print colContent
-        colContents = colContent.split('\t')
-        for col in range(1, len(titles) + 1):
-            ws.cell(row=row, column=col).value = colContents[col - 1]
+        rowValues = colContent.split('\t')
+        for col in range(1, len(columnNames) + 1):
+            ws.cell(row=row, column=col).value = rowValues[col - 1]
         row = row + 1
         # 保存
     wb.save(filename="./resource/result.xlsx")
