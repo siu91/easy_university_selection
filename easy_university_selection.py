@@ -143,7 +143,6 @@ def load_score_line():
 # 加载高校在各省的专业录取分数线
 def load_major_score():
     score_path = './resource/spider_files/major_score_line/' + regionCode + '_' + subject + '.dump'
-    score_file = ''
     if os.path.exists(score_path):
         tmp_file = open(score_path, 'rb')
         d = pickle.load(tmp_file)
@@ -184,10 +183,11 @@ def load_major_score():
 
                     major_name_node = major_element.getElementsByTagName("specialname")[0]
                     major_name = ''
-                    if len(major_name_node) > 0: major_name = major_name_node.childNodes[0].nodeValue
+                    if len(major_name_node.childNodes) > 0: major_name = major_name_node.childNodes[0].nodeValue
 
                     ms = MajorScore()
                     if not ('--' == y or '' == y): ms.year = int(y)
+                    if ms.year < int(year)-3: continue
                     if not ('--' == max_score or '' == max_score): ms.maxScore = int(max_score[0:3])
                     if not ('--' == min_score or '' == min_score): ms.minScore = int(min_score[0:3])
                     if not ('--' == avg_score or '' == avg_score): ms.avgScore = int(avg_score[0:3])
@@ -210,11 +210,13 @@ def load_major_score():
                     ms.region = regionCode
                     ms.school = path
                     ms.subject = subject
+                    ms.majorName = major_name
+                    if majorCodeDict.has_key(major_name.encode('utf-8')):
+                        ms.major = majorCodeDict[major_name.encode('utf-8')]
 
                     # 学校 年份 福建 文科 批次 = 清华大学2016年在福建地区文科第一批次招生分数线
-                    key = path + ',' + y + ',' + regionCode + ',' + subject + ',' + tier_code
+                    key = path + ',' + y + ',' + regionCode + ',' + subject + ',' + tier_code + ',' + ms.major
                     pss[key] = ms
-
     with open(score_path, 'wb') as pickle_file:
         pickle.dump(pss, pickle_file)
         pickle_file.close()
@@ -224,7 +226,6 @@ def load_major_score():
 # 加载高校在各省的录取分数线
 def load_province_score():
     score_path = './resource/spider_files/province_score_line/' + regionCode + '_' + subject + '.dump'
-    score_file = ''
     if os.path.exists(score_path):
         tmp_file = open(score_path, 'rb')
         d = pickle.load(tmp_file)
@@ -609,7 +610,8 @@ def help(region):
 if __name__ == "__main__":
     regionCodeDict = init_cvs_kv('./resource/region_code.csv', False)
     codeRegionDict = init_cvs_kv('./resource/region_code.csv', True)
-    majorCodeDict = init_cvs_kv('./resource/major_code.csv', False)
+    codeMajorDict = init_cvs_kv('./resource/major_code.csv', False)
+    majorCodeDict = init_cvs_kv('./resource/major_code.csv', True)
     customCodeDict = init_custom_code()
 
     # print str(len(sys.argv))
@@ -655,7 +657,7 @@ if __name__ == "__main__":
     # 各学校入取分数
     print '载入全国高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']历年录取分数线'
     provinceScores = load_province_score()
-    #load_major_score()
+    majorScores = load_major_score()
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
     # 评估分数
     evaluate_score = evaluate_three_year_score()
