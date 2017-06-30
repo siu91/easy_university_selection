@@ -96,7 +96,7 @@ def load_score_line(code, region):
     return sls
 
 
-def load_prince_score(regionCode, artsOrScienceCode):
+def load_province_score(regionCode, artsOrScienceCode):
     scorePath = './resource/spider_files/' + regionCode + '_' + artsOrScienceCode + '.dump'
     scoreFile = ''
     if os.path.exists(scorePath):
@@ -481,7 +481,7 @@ if __name__ == "__main__":
     scoreLines = load_score_line(regionCode, regionCodeDict)
     # 各学校入取分数
     print '载入全国高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[artsOrScienceCode] + ']历年录取分数线'
-    provinceScores = load_prince_score(regionCode, artsOrScienceCode)
+    provinceScores = load_province_score(regionCode, artsOrScienceCode)
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
     universityList = filterUniversity(year, regionCode, artsOrScienceCode, score, scoreLines, provinceScores,
                                       universityInfoDict)
