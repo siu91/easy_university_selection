@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2005</year>
+			<specialname>市场营销</specialname>
+			<maxfs>527</maxfs>
+			<varfs>519</varfs>
+			<minfs>--</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2005</year>
+			<specialname>人力资源管理</specialname>
+			<maxfs>502</maxfs>
+			<varfs>499</varfs>
+			<minfs>--</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

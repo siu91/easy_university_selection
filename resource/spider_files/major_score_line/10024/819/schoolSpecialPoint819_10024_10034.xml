@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2010</year>
+			<specialname>会展艺术与技术</specialname>
+			<maxfs>467</maxfs>
+			<varfs>467</varfs>
+			<minfs>--</minfs>
+			<pc>三批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2007</year>
+			<specialname>广告学</specialname>
+			<maxfs>510</maxfs>
+			<varfs>510</varfs>
+			<minfs>--</minfs>
+			<pc>三批</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

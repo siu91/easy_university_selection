@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2016</year>
+			<specialname>传播学</specialname>
+			<maxfs>--</maxfs>
+			<varfs>480</varfs>
+			<minfs>--</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>广告学</specialname>
+			<maxfs>--</maxfs>
+			<varfs>480</varfs>
+			<minfs>--</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>商务英语</specialname>
+			<maxfs>--</maxfs>
+			<varfs>477</varfs>
+			<minfs>--</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

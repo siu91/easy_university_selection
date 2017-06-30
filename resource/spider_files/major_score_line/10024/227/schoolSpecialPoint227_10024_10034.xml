@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2009</year>
+			<specialname>金融学</specialname>
+			<maxfs>539</maxfs>
+			<varfs>539</varfs>
+			<minfs>--</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2009</year>
+			<specialname>广告学</specialname>
+			<maxfs>560</maxfs>
+			<varfs>550</varfs>
+			<minfs>--</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

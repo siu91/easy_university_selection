@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2006</year>
+			<specialname>财政学</specialname>
+			<maxfs>589</maxfs>
+			<varfs>589</varfs>
+			<minfs>--</minfs>
+			<pc>一批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2006</year>
+			<specialname>公共事业管理</specialname>
+			<maxfs>580</maxfs>
+			<varfs>580</varfs>
+			<minfs>--</minfs>
+			<pc>一批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2005</year>
+			<specialname>公共事业管理</specialname>
+			<maxfs>563</maxfs>
+			<varfs>563</varfs>
+			<minfs>--</minfs>
+			<pc>一批</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

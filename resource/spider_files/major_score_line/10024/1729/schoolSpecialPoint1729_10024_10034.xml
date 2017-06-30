@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2016</year>
+			<specialname>英语</specialname>
+			<maxfs>--</maxfs>
+			<varfs>450</varfs>
+			<minfs>--</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>物流管理</specialname>
+			<maxfs>--</maxfs>
+			<varfs>442</varfs>
+			<minfs>--</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>小学教育</specialname>
+			<maxfs>--</maxfs>
+			<varfs>432</varfs>
+			<minfs>--</minfs>
+			<pc>提前</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

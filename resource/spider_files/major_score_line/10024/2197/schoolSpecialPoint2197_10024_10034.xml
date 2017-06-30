@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2015</year>
+			<specialname> 粮食工程</specialname>
+			<maxfs>--</maxfs>
+			<varfs>--</varfs>
+			<minfs>281</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2015</year>
+			<specialname> 粮油储藏与检测技术</specialname>
+			<maxfs>--</maxfs>
+			<varfs>--</varfs>
+			<minfs>286</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

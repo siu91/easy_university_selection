@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2014</year>
+			<specialname>护理</specialname>
+			<maxfs>377</maxfs>
+			<varfs>374</varfs>
+			<minfs>371</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2014</year>
+			<specialname>临床医学</specialname>
+			<maxfs>478</maxfs>
+			<varfs>397</varfs>
+			<minfs>363</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

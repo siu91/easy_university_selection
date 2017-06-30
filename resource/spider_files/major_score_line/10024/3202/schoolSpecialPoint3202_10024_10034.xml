@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2016</year>
+			<specialname>经济管理试验班(国际商务、经济学、市场营销、金融学</specialname>
+			<maxfs>--</maxfs>
+			<varfs>575</varfs>
+			<minfs>--</minfs>
+			<pc>提前</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>人文科学试验班</specialname>
+			<maxfs>--</maxfs>
+			<varfs>568</varfs>
+			<minfs>--</minfs>
+			<pc>提前</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

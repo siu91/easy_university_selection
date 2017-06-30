@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2016</year>
+			<specialname>侦查学</specialname>
+			<maxfs>--</maxfs>
+			<varfs>430</varfs>
+			<minfs>--</minfs>
+			<pc>提前</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>治安学</specialname>
+			<maxfs>--</maxfs>
+			<varfs>435</varfs>
+			<minfs>--</minfs>
+			<pc>提前</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>公安管理学</specialname>
+			<maxfs>--</maxfs>
+			<varfs>433</varfs>
+			<minfs>--</minfs>
+			<pc>提前</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

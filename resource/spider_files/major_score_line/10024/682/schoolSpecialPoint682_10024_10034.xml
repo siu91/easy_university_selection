@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2016</year>
+			<specialname>园林技术</specialname>
+			<maxfs>383</maxfs>
+			<varfs>374</varfs>
+			<minfs>364</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>软件技术                     （农业信息技术）</specialname>
+			<maxfs>328</maxfs>
+			<varfs>328</varfs>
+			<minfs>328</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

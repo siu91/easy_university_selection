@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2016</year>
+			<specialname>应用日语</specialname>
+			<maxfs>337</maxfs>
+			<varfs>330</varfs>
+			<minfs>323</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>电子商务</specialname>
+			<maxfs>366</maxfs>
+			<varfs>352</varfs>
+			<minfs>338</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

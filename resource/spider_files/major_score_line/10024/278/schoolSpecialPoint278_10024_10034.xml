@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2014</year>
+			<specialname>会计学</specialname>
+			<maxfs>--</maxfs>
+			<varfs>555</varfs>
+			<minfs>--</minfs>
+			<pc>一批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2007</year>
+			<specialname>经济学</specialname>
+			<maxfs>528</maxfs>
+			<varfs>528</varfs>
+			<minfs>--</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2006</year>
+			<specialname>经济学</specialname>
+			<maxfs>527</maxfs>
+			<varfs>527</varfs>
+			<minfs>--</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2005</year>
+			<specialname>经济学</specialname>
+			<maxfs>510</maxfs>
+			<varfs>510</varfs>
+			<minfs>--</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2016</year>
+			<specialname>英语</specialname>
+			<maxfs>--</maxfs>
+			<varfs>462</varfs>
+			<minfs>--</minfs>
+			<pc>提前</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>学前教育</specialname>
+			<maxfs>--</maxfs>
+			<varfs>451</varfs>
+			<minfs>--</minfs>
+			<pc>提前</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>小学教育</specialname>
+			<maxfs>--</maxfs>
+			<varfs>463</varfs>
+			<minfs>--</minfs>
+			<pc>提前</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>汉语言文学</specialname>
+			<maxfs>--</maxfs>
+			<varfs>475</varfs>
+			<minfs>--</minfs>
+			<pc>提前</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

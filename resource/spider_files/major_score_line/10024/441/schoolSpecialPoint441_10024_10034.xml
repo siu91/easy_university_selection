@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2015</year>
+			<specialname>公共事业管理</specialname>
+			<maxfs>470</maxfs>
+			<varfs>--</varfs>
+			<minfs>467</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2014</year>
+			<specialname>公共事业管理</specialname>
+			<maxfs>454</maxfs>
+			<varfs>--</varfs>
+			<minfs>409</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

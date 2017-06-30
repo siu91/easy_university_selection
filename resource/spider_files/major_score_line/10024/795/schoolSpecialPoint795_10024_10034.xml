@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2016</year>
+			<specialname>物流管理</specialname>
+			<maxfs>370</maxfs>
+			<varfs>370</varfs>
+			<minfs>370</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>工程造价</specialname>
+			<maxfs>391</maxfs>
+			<varfs>391</varfs>
+			<minfs>391</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>市场营销</specialname>
+			<maxfs>330</maxfs>
+			<varfs>330</varfs>
+			<minfs>330</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

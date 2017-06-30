@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2014</year>
+			<specialname>人力资源管理</specialname>
+			<maxfs>--</maxfs>
+			<varfs>540</varfs>
+			<minfs>--</minfs>
+			<pc>一批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2015</year>
+			<specialname>人力资源管理</specialname>
+			<maxfs>532</maxfs>
+			<varfs>531</varfs>
+			<minfs>529</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

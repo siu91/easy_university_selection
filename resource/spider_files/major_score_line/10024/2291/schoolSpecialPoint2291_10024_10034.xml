@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2016</year>
+			<specialname>应有法语</specialname>
+			<maxfs>391</maxfs>
+			<varfs>380</varfs>
+			<minfs>366</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2015</year>
+			<specialname>应用西班牙语</specialname>
+			<maxfs>425</maxfs>
+			<varfs>399</varfs>
+			<minfs>374</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2015</year>
+			<specialname>应用法语</specialname>
+			<maxfs>453</maxfs>
+			<varfs>424</varfs>
+			<minfs>370</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2015</year>
+			<specialname>应用英语（英语翻译）</specialname>
+			<maxfs>436</maxfs>
+			<varfs>395</varfs>
+			<minfs>371</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

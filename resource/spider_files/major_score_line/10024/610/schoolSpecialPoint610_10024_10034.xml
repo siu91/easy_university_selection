@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2010</year>
+			<specialname>边防管理</specialname>
+			<maxfs>577</maxfs>
+			<varfs>568</varfs>
+			<minfs>--</minfs>
+			<pc>提前</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2009</year>
+			<specialname>警卫学</specialname>
+			<maxfs>584</maxfs>
+			<varfs>584</varfs>
+			<minfs>--</minfs>
+			<pc>提前</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2009</year>
+			<specialname>边防指挥</specialname>
+			<maxfs>594</maxfs>
+			<varfs>594</varfs>
+			<minfs>--</minfs>
+			<pc>提前</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2009</year>
+			<specialname>边防管理</specialname>
+			<maxfs>617</maxfs>
+			<varfs>609</varfs>
+			<minfs>--</minfs>
+			<pc>提前</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

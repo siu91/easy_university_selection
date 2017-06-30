@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2014</year>
+			<specialname>针灸推拿学</specialname>
+			<maxfs>--</maxfs>
+			<varfs>539</varfs>
+			<minfs>--</minfs>
+			<pc>一批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>针灸推拿学</specialname>
+			<maxfs>--</maxfs>
+			<varfs>471</varfs>
+			<minfs>468</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>护理学</specialname>
+			<maxfs>--</maxfs>
+			<varfs>462</varfs>
+			<minfs>460</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2015</year>
+			<specialname>针灸推拿学</specialname>
+			<maxfs>524</maxfs>
+			<varfs>521</varfs>
+			<minfs>517</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

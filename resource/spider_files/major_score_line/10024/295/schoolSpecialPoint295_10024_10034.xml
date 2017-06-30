@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2016</year>
+			<specialname>应用心理学</specialname>
+			<maxfs>526</maxfs>
+			<varfs>522</varfs>
+			<minfs>518</minfs>
+			<pc>一批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>公共事业管理</specialname>
+			<maxfs>517</maxfs>
+			<varfs>514</varfs>
+			<minfs>510</minfs>
+			<pc>一批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2015</year>
+			<specialname>公共事业管理</specialname>
+			<maxfs>561</maxfs>
+			<varfs>559</varfs>
+			<minfs>556</minfs>
+			<pc>一批</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

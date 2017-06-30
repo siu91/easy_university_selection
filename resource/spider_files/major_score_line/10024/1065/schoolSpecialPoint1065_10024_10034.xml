@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2011</year>
+			<specialname>会展策划与管理(会展策划师)</specialname>
+			<maxfs>491</maxfs>
+			<varfs>--</varfs>
+			<minfs>452</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2011</year>
+			<specialname>工程造价(注册造价师)</specialname>
+			<maxfs>491</maxfs>
+			<varfs>--</varfs>
+			<minfs>434</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

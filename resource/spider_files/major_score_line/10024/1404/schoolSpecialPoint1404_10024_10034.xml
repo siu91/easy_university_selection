@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2016</year>
+			<specialname>环境艺术设计（含室内设计方向、景观设计方向）</specialname>
+			<maxfs>351</maxfs>
+			<varfs>350</varfs>
+			<minfs>350</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>商务英语</specialname>
+			<maxfs>331</maxfs>
+			<varfs>330</varfs>
+			<minfs>330</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2015</year>
+			<specialname>环境艺术设计</specialname>
+			<maxfs>404</maxfs>
+			<varfs>404</varfs>
+			<minfs>404</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2015</year>
+			<specialname>商务英语</specialname>
+			<maxfs>432</maxfs>
+			<varfs>413</varfs>
+			<minfs>385</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

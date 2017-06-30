@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2009</year>
+			<specialname>市场营销</specialname>
+			<maxfs>504</maxfs>
+			<varfs>497</varfs>
+			<minfs>--</minfs>
+			<pc>三批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2009</year>
+			<specialname>财务管理</specialname>
+			<maxfs>498</maxfs>
+			<varfs>493</varfs>
+			<minfs>--</minfs>
+			<pc>三批</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

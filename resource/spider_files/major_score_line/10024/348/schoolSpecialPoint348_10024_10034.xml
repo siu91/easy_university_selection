@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2011</year>
+			<specialname>针灸推拿学</specialname>
+			<maxfs>554</maxfs>
+			<varfs>553</varfs>
+			<minfs>0</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2011</year>
+			<specialname>中西医临床医学</specialname>
+			<maxfs>561</maxfs>
+			<varfs>561</varfs>
+			<minfs>0</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2011</year>
+			<specialname>中医学</specialname>
+			<maxfs>554</maxfs>
+			<varfs>554</varfs>
+			<minfs>0</minfs>
+			<pc>二批</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

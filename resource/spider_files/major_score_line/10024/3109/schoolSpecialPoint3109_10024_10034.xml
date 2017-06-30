@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2016</year>
+			<specialname>财务管理</specialname>
+			<maxfs>366</maxfs>
+			<varfs>366</varfs>
+			<minfs>366</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>金融管理</specialname>
+			<maxfs>374</maxfs>
+			<varfs>374</varfs>
+			<minfs>374</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>会计</specialname>
+			<maxfs>440</maxfs>
+			<varfs>414</varfs>
+			<minfs>388</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+	    <areapiont>
+			<year>2016</year>
+			<specialname>电子商务</specialname>
+			<maxfs>340</maxfs>
+			<varfs>340</varfs>
+			<minfs>340</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>

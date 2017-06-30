@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<areapionts>
+    	    <areapiont>
+			<year>2016</year>
+			<specialname>高速铁路客运乘务</specialname>
+			<maxfs>380</maxfs>
+			<varfs>380</varfs>
+			<minfs>380</minfs>
+			<pc>专科</pc>
+			<stype>文科</stype>
+		</areapiont>
+</areapionts>
