@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
-#////////////////////////////////////////////////////////////////////
-#//                          _ooOoo_                               //
-#//                         o8888888o                              //
-#//                         88" . "88                              //
-#//                         (| ^_^ |)                              //
-#//                         O\  =  /O                              //
-#//                      ____/`---'\____                           //
-#//                    .'  \\|     |//  `.                         //
-#//                   /  \\|||  :  |||//  \                        //
-#//                  /  _||||| -:- |||||-  \                       //
-#//                  |   | \\\  -  /// |   |                       //
-#//                  | \_|  ''\---/''  |   |                       //
-#//                  \  .-\__  `-`  ___/-. /                       //
-#//                ___`. .'  /--.--\  `. . ___                     //
-#//              ."" '<  `.___\_<|>_/___.'  >'"".                  //
-#//            | | :  `- \`.;`\ _ /`;.`/ - ` : | |                 //
-#//            \  \ `-.   \_ __\ /__ _/   .-` /  /                 //
-#//      ========`-.____`-.___\_____/___.-`____.-'========         //
-#//                           `=---='                              //
-#//      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^        //
-#//         佛祖保佑       永无BUG     永不修改                      //
-#////////////////////////////////////////////////////////////////////
+# ////////////////////////////////////////////////////////////////////
+# //                          _ooOoo_                               //
+# //                         o8888888o                              //
+# //                         88" . "88                              //
+# //                         (| ^_^ |)                              //
+# //                         O\  =  /O                              //
+# //                      ____/`---'\____                           //
+# //                    .'  \\|     |//  `.                         //
+# //                   /  \\|||  :  |||//  \                        //
+# //                  /  _||||| -:- |||||-  \                       //
+# //                  |   | \\\  -  /// |   |                       //
+# //                  | \_|  ''\---/''  |   |                       //
+# //                  \  .-\__  `-`  ___/-. /                       //
+# //                ___`. .'  /--.--\  `. . ___                     //
+# //              ."" '<  `.___\_<|>_/___.'  >'"".                  //
+# //            | | :  `- \`.;`\ _ /`;.`/ - ` : | |                 //
+# //            \  \ `-.   \_ __\ /__ _/   .-` /  /                 //
+# //      ========`-.____`-.___\_____/___.-`____.-'========         //
+# //                           `=---='                              //
+# //      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^        //
+# //         佛祖保佑       永无BUG     永不修改                      //
+# ////////////////////////////////////////////////////////////////////
 
 import sys
 import os
@@ -122,22 +122,22 @@ def load_score_line():
 
 
 def load_province_score():
-    score_path = './resource/spider_files/' + regionCode + '_' + subject + '.dump'
+    score_path = './resource/spider_files/province_score_line/' + regionCode + '_' + subject + '.dump'
     score_file = ''
     if os.path.exists(score_path):
         tmp_file = open(score_path, 'rb')
         d = pickle.load(tmp_file)
         tmp_file.close()
         return d
-    paths = os.listdir('./resource/spider_files/' + regionCode + '/')
+    paths = os.listdir('./resource/spider_files/province_score_line/' + regionCode + '/')
     pss = {}
     for path in paths:
-        files = os.listdir('./resource/spider_files/' + regionCode + '/' + path)
+        files = os.listdir('./resource/spider_files/province_score_line/' + regionCode + '/' + path)
         for sFile in files:
             if not os.path.isdir(sFile):
                 if not (subject in sFile): continue
                 print sFile
-                dom = xml.dom.minidom.parse('./resource/spider_files/' + regionCode + '/' + path + '/' + sFile)
+                dom = xml.dom.minidom.parse('./resource/spider_files/province_score_line/' + regionCode + '/' + path + '/' + sFile)
                 root = dom.documentElement
                 score_elements = root.getElementsByTagName("score")
                 for score_element in score_elements:
@@ -268,9 +268,15 @@ def init_spider(path):
     return url_set
 
 
-def spider_university_score_line(tier):
-    url404 = init_spider('./resource/spider_files/' + regionCode + '_404.url')
-    has_spider = init_spider('./resource/spider_files/' + regionCode + '_spider.url')
+# 抓取大学专业分
+def spider_university_major_score_line():
+    return
+
+
+# 抓取大学省录取分
+def spider_university_province_score_line(tier):
+    url404 = init_spider('./resource/spider_files/province_score_line/' + regionCode + '_404.url')
+    has_spider = init_spider('./resource/spider_files/province_score_line/' + regionCode + '_spider.url')
     url404_size = len(url404)
     has_spider_size = len(has_spider)
     url_base = 'http://gkcx.eol.cn/schoolhtm/scores/provinceScores[university_code]_' + regionCode + '_' + subject + '_' + tier + '.xml'
@@ -287,7 +293,7 @@ def spider_university_score_line(tier):
             continue
         has_spider.add(url)
         res = res_data.read()
-        path = './resource/spider_files/' + regionCode + '/' + universityInfoDict[k].code
+        path = './resource/spider_files/province_score_line/' + regionCode + '/' + universityInfoDict[k].code
         if not os.path.exists(path): os.makedirs(path)
         xml_file = open(
             path + '/provinceScores' + universityInfoDict[
@@ -300,7 +306,7 @@ def spider_university_score_line(tier):
         wr = ''
         for U in url404:
             wr = wr + U + '\n'
-        tmp_file = open('./resource/spider_files/' + regionCode + '_404.url', 'w')  
+        tmp_file = open('./resource/spider_files/province_score_line/' + regionCode + '_404.url', 'w')
         tmp_file.write(str(wr))  # 写入内容，如果没有该文件就自动创建
         tmp_file.close()  # (关闭文件)
 
@@ -308,7 +314,7 @@ def spider_university_score_line(tier):
         wr = ''
         for U in has_spider:
             wr = wr + U + '\n'
-        tmp_file = open('./resource/spider_files/' + regionCode + '_spider.url', 'w')  
+        tmp_file = open('./resource/spider_files/province_score_line/' + regionCode + '_spider.url', 'w')
         tmp_file.write(str(wr))  # 写入内容，如果没有该文件就自动创建
         tmp_file.close()  # (关闭文件)
 
@@ -514,13 +520,13 @@ if __name__ == "__main__":
     print '加载高校库完成，共有' + str(len(universityInfoDict)) + '所高校信息载入'
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
     print '抓取高校库中所有高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']招生分数线'
-    spider_university_score_line('10036')
+    spider_university_province_score_line('10036')
     print '本一批次抓取完成'
-    spider_university_score_line('10037')
+    spider_university_province_score_line('10037')
     print '本二批次抓取完成'
-    spider_university_score_line('10038')
+    spider_university_province_score_line('10038')
     print '本三批次抓取完成'
-    spider_university_score_line('10148')
+    spider_university_province_score_line('10148')
     print '高职专科批次抓取完成'
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
     # 历年分数线
