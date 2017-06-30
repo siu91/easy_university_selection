@@ -407,7 +407,7 @@ def evaluate_score(year, region, subject, tier, n, rate1, rate2, rate3):
 def save_xlsx():
     print '筛选结果如下，结果将保存到./resource/result.xlsx'
     print '-----------------------------------------------------------------------------------------------------'
-    title = '学校\t地区\t类别\t类别排名\t热度排名\t入取成功预测值（1-9）\t 最高分\t最低分\t平均分\t批次\t年份'
+    title = '学校\t地区\t类别\t类别排名\t热度排名\t录取成功预测值（1-9）\t 最高分\t最低分\t平均分\t批次\t年份'
     print title
     print '-----------------------------------------------------------------------------------------------------'
     # 筛选结果保存到xls
@@ -497,7 +497,7 @@ if __name__ == "__main__":
     # spider_university_score_line(universityInfoDict, '10024', '10034', '10036')
 
     # 历年分数线
-    print '载入[' + codeRegionDict[regionCode] + ']地区' + '历年高考分数线'
+    print '载入[' + codeRegionDict[regionCode] + ']地区历年高考划线'
     scoreLines = load_score_line()
     # 各学校入取分数
     print '载入全国高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']历年录取分数线'
