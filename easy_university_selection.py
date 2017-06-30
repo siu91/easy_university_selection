@@ -383,17 +383,14 @@ def filter_university():
 
 
 def evaluate_score(year, region, subject, tier, n, rate1, rate2, rate3):
-    last1score1 = 0
     if '10036' == tier:
         last1score1 = scoreLines[str(year - n) + ',' + region + ',' + subject + ',10036'].score * rate1 * 0.7
     else:
         last1score1 = scoreLines[str(year - n) + ',' + region + ',' + subject + ',10036'].score * rate1 * 0.15
-    last1score2 = 0
     if '10037' == tier:
         last1score2 = scoreLines[str(year - n) + ',' + region + ',' + subject + ',10037'].score * rate2 * 0.7
     else:
         last1score2 = scoreLines[str(year - n) + ',' + region + ',' + subject + ',10037'].score * rate2 * 0.15
-    last1score3 = 0
     if '10038' == tier:
         last1score3 = scoreLines[str(year - n) + ',' + region + ',' + subject + ',10038'].score * rate3 * 0.7
     else:
