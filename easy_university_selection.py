@@ -404,6 +404,37 @@ def evaluate_score(year, region, subject, tier, n, rate1, rate2, rate3):
     return last1score1 + last1score2 + last1score3
 
 
+def save_xlsx():
+    print '筛选结果如下，结果将保存到./resource/result.xlsx'
+    print '-----------------------------------------------------------------------------------------------------'
+    title = '学校\t地区\t类别\t类别排名\t热度排名\t入取成功预测值（1-9）\t 最高分\t最低分\t平均分\t批次\t年份'
+    print title
+    print '-----------------------------------------------------------------------------------------------------'
+    # 筛选结果保存到xls
+    wb = Workbook()
+    # 获取当前活跃的worksheet,默认就是第一个worksheet
+    ws = wb.active
+    columnNames = title.split('\t')
+    for i in range(1, len(columnNames) + 1):
+        ws.cell(row=1, column=i).value = columnNames[i - 1]
+
+    row = 2
+    for u in universityList:
+        if u.tier in filterTier: continue
+        colContent = universityInfoDict[u.school].name + '\t' + universityInfoDict[u.school].region + '\t' + \
+                     universityInfoDict[u.school].classes + '\t' + str(
+            universityInfoDict[u.school].classRank) + '\t' + str(u.hot) + '\t' + str(u.hope) + '\t' + str(
+            u.maxScore) + '\t' + str(u.minScore) + '\t' + str(u.avgScore) + '\t' + customCodeDict[u.tier] + '\t' + str(
+            u.year)
+        print colContent
+        rowValues = colContent.split('\t')
+        for col in range(1, len(columnNames) + 1):
+            ws.cell(row=row, column=col).value = rowValues[col - 1]
+        row = row + 1
+        # 保存
+    wb.save(filename="./resource/result.xlsx")
+
+
 def init_custom_code():
     code_dict = {'10035': '理科', '10034': '文科', '10036': '一本', '10037': '二本', '10038': '三本', '10148': '专科'}
     return code_dict
@@ -472,33 +503,7 @@ if __name__ == "__main__":
     print '载入全国高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']历年录取分数线'
     provinceScores = load_province_score()
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+    # 筛选高校
     universityList = filter_university()
-
-    print '筛选结果如下，结果将保存到./resource/result.xlsx'
-    print '-----------------------------------------------------------------------------------------------------'
-    title = '学校\t地区\t类别\t类别排名\t热度排名\t入取成功预测值（1-9）\t 最高分\t最低分\t平均分\t批次\t年份'
-    print title
-    print '-----------------------------------------------------------------------------------------------------'
-    # 筛选结果保存到xls
-    wb = Workbook()
-    # 获取当前活跃的worksheet,默认就是第一个worksheet
-    ws = wb.active
-    columnNames = title.split('\t')
-    for i in range(1, len(columnNames) + 1):
-        ws.cell(row=1, column=i).value = columnNames[i - 1]
-
-    row = 2
-    for u in universityList:
-        if u.tier in filterTier: continue
-        colContent = universityInfoDict[u.school].name + '\t' + universityInfoDict[u.school].region + '\t' + \
-                     universityInfoDict[u.school].classes + '\t' + str(
-            universityInfoDict[u.school].classRank) + '\t' + str(u.hot) + '\t' + str(u.hope) + '\t' + str(
-            u.maxScore) + '\t' + str(u.minScore) + '\t' + str(u.avgScore) + '\t' + customCodeDict[u.tier] + '\t' + str(
-            u.year)
-        print colContent
-        rowValues = colContent.split('\t')
-        for col in range(1, len(columnNames) + 1):
-            ws.cell(row=row, column=col).value = rowValues[col - 1]
-        row = row + 1
-        # 保存
-    wb.save(filename="./resource/result.xlsx")
+    # 保存到 xlsx
+    save_xlsx()
