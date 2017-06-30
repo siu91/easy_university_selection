@@ -7,6 +7,7 @@ import xml.sax
 from xml.dom.minidom import parse
 import xml.dom.minidom
 from openpyxl import Workbook
+import pickle
 
 
 class ScoreLine:
@@ -190,7 +191,14 @@ def load_prince_score(regionCode, artsOrScienceCode):
 
 
 def load_university_info(region):
+    dumpFile = './resource/university_info.dump'
     universityDict = {}
+    if os.path.exists(dumpFile):
+        f = open(dumpFile, 'rb')
+        d = pickle.load(f)
+        f.close()
+        return d
+
     f = open('./resource/university_info.csv')
     iter_f = iter(f)  # 创建迭代器
     for line in iter_f:
@@ -212,6 +220,9 @@ def load_university_info(region):
         university.code = arr[9]
         universityDict[arr[9]] = university
 
+    with open(dumpFile, 'wb') as pickle_file:
+        pickle.dump(universityDict, pickle_file)
+        pickle_file.close
     return universityDict
 
 
@@ -312,7 +323,7 @@ def filterUniversity(year, region, subject, score, scoreLines, provinceScores, u
             tier = '10037'
             if score > score1:
                 tier = '10036'
-    #if '' == tier:
+    # if '' == tier:
     #   print 'error....'
     #   return
 
