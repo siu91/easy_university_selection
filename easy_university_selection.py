@@ -187,7 +187,7 @@ def load_major_score():
 
                     ms = MajorScore()
                     if not ('--' == y or '' == y): ms.year = int(y)
-                    if ms.year < int(year)-3: continue
+                    if ms.year < int(year) - 3: continue
                     if not ('--' == max_score or '' == max_score): ms.maxScore = int(max_score[0:3])
                     if not ('--' == min_score or '' == min_score): ms.minScore = int(min_score[0:3])
                     if not ('--' == avg_score or '' == avg_score): ms.avgScore = int(avg_score[0:3])
@@ -206,13 +206,15 @@ def load_major_score():
                     else:
                         continue
 
+                    major_name = major_name.encode('utf-8')
+
                     ms.tier = tier_code
                     ms.region = regionCode
                     ms.school = path
                     ms.subject = subject
                     ms.majorName = major_name
-                    if majorCodeDict.has_key(major_name.encode('utf-8')):
-                        ms.major = majorCodeDict[major_name.encode('utf-8')]
+                    if majorCodeDict.has_key(major_name):
+                        ms.major = majorCodeDict[major_name]
 
                     # 学校 年份 福建 文科 批次 = 清华大学2016年在福建地区文科第一批次招生分数线
                     key = path + ',' + y + ',' + regionCode + ',' + subject + ',' + tier_code + ',' + ms.major
@@ -559,10 +561,9 @@ def evaluate_score(year, region, subject, tier, n, rate1, rate2, rate3):
     return last1score1 + last1score2 + last1score3
 
 
-def save_xlsx():
-    print '筛选结果如下，结果将保存到./resource/result.xlsx'
+def save(title, university, xlsx):
+    print '筛选结果如下，结果将保存到' + xlsx
     print '-----------------------------------------------------------------------------------------------------'
-    title = '学校\t地区\t类别\t类别排名\t热度排名\t录取成功预测值（1-9）\t 最高分\t最低分\t平均分\t批次\t年份'
     print title
     print '-----------------------------------------------------------------------------------------------------'
     # 筛选结果保存到xls
@@ -574,24 +575,36 @@ def save_xlsx():
         ws.cell(row=1, column=i).value = column_names[i - 1]
 
     row = 2
-    for u in universityListByProvinceScore:
+    for u in university:
         if u.tier in filterTier: continue
-        colContent = universityInfoDict[u.school].name + '\t' + universityInfoDict[u.school].region + '\t' + \
-                     universityInfoDict[u.school].classes + '\t' + str(
+        col_content = universityInfoDict[u.school].name + '\t'
+        if isinstance(u, MajorScore):
+            col_content = col_content + u.majorName + '\t'
+        col_content = col_content + universityInfoDict[u.school].region + '\t' + \
+                      universityInfoDict[u.school].classes + '\t' + str(
             universityInfoDict[u.school].classRank) + '\t' + str(u.hot) + '\t' + str(u.hope) + '\t' + str(
             u.maxScore) + '\t' + str(u.minScore) + '\t' + str(u.avgScore) + '\t' + customCodeDict[u.tier] + '\t' + str(
             u.year)
-        print colContent
-        rowValues = colContent.split('\t')
+
+        print col_content
+        row_values = col_content.split('\t')
         for col in range(1, len(column_names) + 1):
-            ws.cell(row=row, column=col).value = rowValues[col - 1]
+            ws.cell(row=row, column=col).value = row_values[col - 1]
         row = row + 1
         # 保存
-    wb.save(filename="./resource/result.xlsx")
+    wb.save(filename=xlsx)
+
+
+def save_xlsx():
+    save('学校\t地区\t类别\t类别排名\t热度排名\t录取成功预测值（1-9）\t 最高分\t最低分\t平均分\t批次\t年份', universityListByProvinceScore,
+         './resource/result_by_province_score.xlsx')
+    save('学校\t专业\t地区\t类别\t类别排名\t热度排名\t录取成功预测值（1-9）\t 最高分\t最低分\t平均分\t批次\t年份', universityListByMajorScore,
+         './resource/result_by_major_score.xlsx')
 
 
 def init_custom_code():
-    code_dict = {'10035': '理科', '10034': '文科', '10036': '一本', '10037': '二本', '10038': '三本', '10148': '专科'}
+    code_dict = {'10035': '理科', '10034': '文科', '10036': '一本', '10037': '二本', '10038': '三本', '10148': '专科',
+                 '10149': '提前'}
     return code_dict
 
 
@@ -660,11 +673,11 @@ if __name__ == "__main__":
     spider_university_major_score_line()
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
     print '载入[' + codeRegionDict[regionCode] + ']地区历年高考划线'
-    scoreLines = load_score_line() # 历年分数线
+    scoreLines = load_score_line()  # 历年分数线
     print '载入全国高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']历年录取分数线'
-    provinceScores = load_province_score() # 各学校入取分数
+    provinceScores = load_province_score()  # 各学校入取分数
     print '载入全国高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']历年录取专业分数线'
-    majorScores = load_major_score() # 各学校各专业录取分数
+    majorScores = load_major_score()  # 各学校各专业录取分数
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
     # 评估分数
     evaluate_score = evaluate_three_year_score()
