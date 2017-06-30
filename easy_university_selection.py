@@ -439,9 +439,9 @@ def save_xlsx():
     wb = Workbook()
     # 获取当前活跃的worksheet,默认就是第一个worksheet
     ws = wb.active
-    columnNames = title.split('\t')
-    for i in range(1, len(columnNames) + 1):
-        ws.cell(row=1, column=i).value = columnNames[i - 1]
+    column_names = title.split('\t')
+    for i in range(1, len(column_names) + 1):
+        ws.cell(row=1, column=i).value = column_names[i - 1]
 
     row = 2
     for u in universityList:
@@ -453,7 +453,7 @@ def save_xlsx():
             u.year)
         print colContent
         rowValues = colContent.split('\t')
-        for col in range(1, len(columnNames) + 1):
+        for col in range(1, len(column_names) + 1):
             ws.cell(row=row, column=col).value = rowValues[col - 1]
         row = row + 1
         # 保存
