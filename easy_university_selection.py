@@ -137,27 +137,26 @@ def load_province_score():
                 dom = xml.dom.minidom.parse('./resource/spider_files/' + regionCode + '/' + path + '/' + sFile)
                 root = dom.documentElement
                 scores = root.getElementsByTagName("score")
-                for score in scores:
+                for score_element in scores:
                     # print score.nodeName
-                    # print score.toxml()
-                    year_node = score.getElementsByTagName("year")[0]
-                    year = ''
-                    if len(year_node.childNodes) > 0: year = year_node.childNodes[0].nodeValue
+                    year_node = score_element.getElementsByTagName("year")[0]
+                    y = ''
+                    if len(year_node.childNodes) > 0: y = year_node.childNodes[0].nodeValue
                     # print (yearNode.childNodes)
-                    max_score_node = score.getElementsByTagName("maxScore")[0]
+                    max_score_node = score_element.getElementsByTagName("maxScore")[0]
                     max_score = ''
                     if len(max_score_node.childNodes) > 0: max_score = max_score_node.childNodes[0].nodeValue
-                    min_score_node = score.getElementsByTagName("minScore")[0]
+                    min_score_node = score_element.getElementsByTagName("minScore")[0]
                     min_score = ''
                     if len(min_score_node.childNodes) > 0: min_score = min_score_node.childNodes[0].nodeValue
-                    avg_score_node = score.getElementsByTagName("avgScore")[0]
+                    avg_score_node = score_element.getElementsByTagName("avgScore")[0]
                     avg_score = ''
                     if len(avg_score_node.childNodes) > 0: avg_score = avg_score_node.childNodes[0].nodeValue
-                    tier_node = score.getElementsByTagName("rb")[0]
+                    tier_node = score_element.getElementsByTagName("rb")[0]
                     tier = ''
                     if len(tier_node.childNodes) > 0: tier = tier_node.childNodes[0].nodeValue
                     ps = ProvinceScore()
-                    if not ('--' == year or '' == year): ps.year = int(year)
+                    if not ('--' == y or '' == y): ps.year = int(y)
                     if not ('--' == max_score or '' == max_score): ps.maxScore = int(max_score[0:3])
                     if not ('--' == min_score or '' == min_score): ps.minScore = int(min_score[0:3])
                     if not ('--' == avg_score or '' == avg_score): ps.avgScore = int(avg_score[0:3])
@@ -181,7 +180,7 @@ def load_province_score():
                     ps.subject = subject
 
                     # 学校 年份 福建 文科 批次 = 清华大学2016年在福建地区文科第一批次招生分数线
-                    key = path + ',' + year + ',' + regionCode + ',' + subject + ',' + tier_code
+                    key = path + ',' + y + ',' + regionCode + ',' + subject + ',' + tier_code
                     score_file = score_file + key + ',' + str(ps.maxScore) + ',' + str(ps.minScore) + ',' + str(
                         ps.avgScore) + '\n'
                     pss[key] = ps
