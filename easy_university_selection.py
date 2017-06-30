@@ -244,14 +244,14 @@ def init_spider(path):
     return url_set
 
 
-def spider_university_score_line(universityInfo, regionCode, subject, tier):
+def spider_university_score_line(tier):
     url404 = init_spider('./resource/spider_files/' + regionCode + '_404.url')
     has_spider = init_spider('./resource/spider_files/' + regionCode + '_spider.url')
-    url404Size = len(url404)
+    url404_size = len(url404)
     has_spider_size = len(has_spider)
     url_base = 'http://gkcx.eol.cn/schoolhtm/scores/provinceScores[university_code]_' + regionCode + '_' + subject + '_' + tier + '.xml'
-    for k in universityInfo:
-        url = url_base.replace('[university_code]', universityInfo[k].code)
+    for k in universityInfoDict:
+        url = url_base.replace('[university_code]', universityInfoDict[k].code)
         if url in url404: continue
         if url in has_spider: continue
         print url
@@ -263,16 +263,16 @@ def spider_university_score_line(universityInfo, regionCode, subject, tier):
             continue
         has_spider.add(url)
         res = res_data.read()
-        path = './resource/spider_files/' + regionCode + '/' + universityInfo[k].code
+        path = './resource/spider_files/' + regionCode + '/' + universityInfoDict[k].code
         if not os.path.exists(path): os.makedirs(path)
         xml_file = open(
-            path + '/provinceScores' + universityInfo[
+            path + '/provinceScores' + universityInfoDict[
                 k].code + '_' + regionCode + '_' + subject + '_' + tier + '.xml', 'w')
         xml_file.write(res)
         xml_file.close()
         # print res
 
-    if not len(url404) == url404Size:
+    if not len(url404) == url404_size:
         wr = ''
         for U in url404:
             wr = wr + U + '\n'
@@ -329,7 +329,7 @@ def filter_university():
         ps = provinceScores[k]
         is_filter = True
         if ps.school in school_set: continue
-        if not ps.subject == subject: continue
+        if not subject == ps.subject: continue
         if ps.minScore == 0 and ps.avgScore == 0 and ps.maxScore == 0: continue
         hope = 0
         if not ps.minScore == 0:
@@ -455,13 +455,13 @@ if __name__ == "__main__":
 
     universityInfoDict = load_university_info()
     print '抓取高校库中所有高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']招生分数线'
-    spider_university_score_line(universityInfoDict, regionCode, subject, '10036')
+    spider_university_score_line('10036')
     print '本一批次抓取完成'
-    spider_university_score_line(universityInfoDict, regionCode, subject, '10037')
+    spider_university_score_line('10037')
     print '本二批次抓取完成'
-    spider_university_score_line(universityInfoDict, regionCode, subject, '10038')
+    spider_university_score_line('10038')
     print '本三批次抓取完成'
-    spider_university_score_line(universityInfoDict, regionCode, subject, '10148')
+    spider_university_score_line('10148')
     print '高职专科批次抓取完成'
     # spider_university_score_line(universityInfoDict, '10024', '10034', '10036')
 
