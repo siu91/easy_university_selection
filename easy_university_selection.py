@@ -61,6 +61,25 @@ class ProvinceScore:
     hot = 0
 
 
+# 专业分数线
+class MajorScore:
+    def __init__(self):
+        pass
+
+    year = 0
+    region = ''
+    school = ''
+    subject = ''
+    maxScore = 0
+    avgScore = 0
+    minScore = 0
+    tier = ''
+    hope = 0
+    hot = 0
+    major = ''
+    majorName = ''
+
+
 # 高校信息
 class UniversityInfo:
     def __init__(self):
@@ -121,6 +140,88 @@ def load_score_line():
     return sls
 
 
+# 加载高校在各省的专业录取分数线
+def load_major_score():
+    score_path = './resource/spider_files/major_score_line/' + regionCode + '_' + subject + '.dump'
+    score_file = ''
+    if os.path.exists(score_path):
+        tmp_file = open(score_path, 'rb')
+        d = pickle.load(tmp_file)
+        tmp_file.close()
+        return d
+    paths = os.listdir('./resource/spider_files/major_score_line/' + regionCode + '/')
+    pss = {}
+    for path in paths:
+        files = os.listdir('./resource/spider_files/major_score_line/' + regionCode + '/' + path)
+        for sFile in files:
+            if not os.path.isdir(sFile):
+                if not (subject in sFile): continue
+                print sFile
+                dom = xml.dom.minidom.parse(
+                    './resource/spider_files/major_score_line/' + regionCode + '/' + path + '/' + sFile)
+                root = dom.documentElement
+                major_elements = root.getElementsByTagName("areapiont")
+                for major_element in major_elements:
+                    year_node = major_element.getElementsByTagName("year")[0]
+                    y = ''
+                    if len(year_node.childNodes) > 0: y = year_node.childNodes[0].nodeValue
+
+                    max_score_node = major_element.getElementsByTagName("maxfs")[0]
+                    max_score = ''
+                    if len(max_score_node.childNodes) > 0: max_score = max_score_node.childNodes[0].nodeValue
+
+                    min_score_node = major_element.getElementsByTagName("minfs")[0]
+                    min_score = ''
+                    if len(min_score_node.childNodes) > 0: min_score = min_score_node.childNodes[0].nodeValue
+
+                    avg_score_node = major_element.getElementsByTagName("varfs")[0]
+                    avg_score = ''
+                    if len(avg_score_node.childNodes) > 0: avg_score = avg_score_node.childNodes[0].nodeValue
+
+                    tier_node = major_element.getElementsByTagName("pc")[0]
+                    tier = ''
+                    if len(tier_node.childNodes) > 0: tier = tier_node.childNodes[0].nodeValue
+
+                    major_name_node = major_element.getElementsByTagName("specialname")[0]
+                    major_name = ''
+                    if len(major_name_node) > 0: major_name = major_name_node.childNodes[0].nodeValue
+
+                    ms = MajorScore()
+                    if not ('--' == y or '' == y): ms.year = int(y)
+                    if not ('--' == max_score or '' == max_score): ms.maxScore = int(max_score[0:3])
+                    if not ('--' == min_score or '' == min_score): ms.minScore = int(min_score[0:3])
+                    if not ('--' == avg_score or '' == avg_score): ms.avgScore = int(avg_score[0:3])
+                    tier = tier.encode('utf-8')
+
+                    if '一' in tier:
+                        tier_code = '10036'
+                    elif '二' in tier:
+                        tier_code = '10037'
+                    elif '三' in tier:
+                        tier_code = '10038'
+                    elif '专' in tier:
+                        tier_code = '10148'
+                    elif '提前' in tier:
+                        tier_code = '10149'
+                    else:
+                        continue
+
+                    ms.tier = tier_code
+                    ms.region = regionCode
+                    ms.school = path
+                    ms.subject = subject
+
+                    # 学校 年份 福建 文科 批次 = 清华大学2016年在福建地区文科第一批次招生分数线
+                    key = path + ',' + y + ',' + regionCode + ',' + subject + ',' + tier_code
+                    pss[key] = ms
+
+    with open(score_path, 'wb') as pickle_file:
+        pickle.dump(pss, pickle_file)
+        pickle_file.close()
+    return pss
+
+
+# 加载高校在各省的录取分数线
 def load_province_score():
     score_path = './resource/spider_files/province_score_line/' + regionCode + '_' + subject + '.dump'
     score_file = ''
@@ -166,7 +267,6 @@ def load_province_score():
                     if not ('--' == avg_score or '' == avg_score): ps.avgScore = int(avg_score[0:3])
                     tier = tier.encode('utf-8')
 
-                    tier_code = ''
                     if '一' in tier:
                         tier_code = '10036'
                     elif '二' in tier:
@@ -185,13 +285,8 @@ def load_province_score():
 
                     # 学校 年份 福建 文科 批次 = 清华大学2016年在福建地区文科第一批次招生分数线
                     key = path + ',' + y + ',' + regionCode + ',' + subject + ',' + tier_code
-                    score_file = score_file + key + ',' + str(ps.maxScore) + ',' + str(ps.minScore) + ',' + str(
-                        ps.avgScore) + '\n'
                     pss[key] = ps
 
-    tmp_file = open(score_path, 'w')
-    tmp_file.write(score_file.encode('utf-8'))  # 写入内容，如果没有该文件就自动创建
-    tmp_file.close()  # (关闭文件)
     with open(score_path, 'wb') as pickle_file:
         pickle.dump(pss, pickle_file)
         pickle_file.close()
@@ -234,28 +329,20 @@ def load_university_info():
     return university_dict
 
 
-def init_region_code():
-    region_code = {}
-    f = open('./resource/region_code.csv')
+def init_cvs_kv(path, reverse):
+    kv = {}
+    f = open(path)
     iter_f = iter(f)  # 创建迭代器
     for line in iter_f:
         line = ''.join(line.split())
         arr = line.split(',')
-        region_code[arr[0]] = arr[1]
+        if not len(arr) == 2: continue
+        if reverse:
+            kv[arr[1]] = arr[0]
+        else:
+            kv[arr[0]] = arr[1]
 
-    return region_code
-
-
-def init_code_region():
-    region_code = {}
-    f = open('./resource/region_code.csv')
-    iter_f = iter(f)  # 创建迭代器
-    for line in iter_f:
-        line = ''.join(line.split())
-        arr = line.split(',')
-        region_code[arr[1]] = arr[0]
-
-    return region_code
+    return kv
 
 
 def init_spider(path):
@@ -520,9 +607,11 @@ def help(region):
 # 10149 提前
 
 if __name__ == "__main__":
-    regionCodeDict = init_region_code()
-    codeRegionDict = init_code_region()
+    regionCodeDict = init_cvs_kv('./resource/region_code.csv', False)
+    codeRegionDict = init_cvs_kv('./resource/region_code.csv', True)
+    majorCodeDict = init_cvs_kv('./resource/major_code.csv', False)
     customCodeDict = init_custom_code()
+
     # print str(len(sys.argv))
     if len(sys.argv) < 5:
         help(regionCodeDict)
@@ -566,6 +655,7 @@ if __name__ == "__main__":
     # 各学校入取分数
     print '载入全国高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']历年录取分数线'
     provinceScores = load_province_score()
+    #load_major_score()
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
     # 评估分数
     evaluate_score = evaluate_three_year_score()
