@@ -96,34 +96,14 @@ def load_score_line(code, region):
     return sls
 
 
-def load_prince_score_by_file(path):
-    pss = {}
-    f = open(path)  # 打开文件
-    iter_f = iter(f)  # 创建迭代器
-    for line in iter_f:  # 遍历文件，一行行遍历，读取文本
-        line = ''.join(line.split())
-        ps = ProvinceScore()
-        arr = line.split(',')
-        ps.year = int(arr[1])
-        ps.maxScore = int(arr[5])
-        ps.minScore = int(arr[6])
-        ps.avgScore = int(arr[7])
-        ps.tier = arr[4]
-        ps.region = arr[2]
-        ps.school = arr[0]
-        ps.subject = arr[3]
-        # 学校 年份 福建 文科 批次 = 清华大学2016年在福建地区文科第一批次招生分数线
-        key = arr[0] + ',' + arr[1] + ',' + arr[2] + ',' + arr[3] + ',' + arr[4]
-
-        pss[key] = ps
-
-    return pss
-
-
 def load_prince_score(regionCode, artsOrScienceCode):
-    scorePath = './resource/spider_files/' + regionCode + '_' + artsOrScienceCode + '.score'
+    scorePath = './resource/spider_files/' + regionCode + '_' + artsOrScienceCode + '.dump'
     scoreFile = ''
-    if os.path.exists(scorePath): return load_prince_score_by_file(scorePath)
+    if os.path.exists(scorePath):
+        f = open(scorePath, 'rb')
+        d = pickle.load(f)
+        f.close()
+        return d
     paths = os.listdir('./resource/spider_files/' + regionCode + '/')
     pss = {}
     for path in paths:
@@ -187,6 +167,9 @@ def load_prince_score(regionCode, artsOrScienceCode):
     f = open(scorePath, 'w')  # 文件句柄（放到了内存什么位置）
     f.write(scoreFile.encode('utf-8'))  # 写入内容，如果没有该文件就自动创建
     f.close()  # (关闭文件)
+    with open(scorePath, 'wb') as pickle_file:
+        pickle.dump(pss, pickle_file)
+        pickle_file.close
     return pss
 
 
