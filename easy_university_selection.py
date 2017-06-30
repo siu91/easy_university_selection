@@ -100,9 +100,9 @@ def load_province_score():
     score_path = './resource/spider_files/' + regionCode + '_' + subject + '.dump'
     score_file = ''
     if os.path.exists(score_path):
-        f = open(score_path, 'rb')
-        d = pickle.load(f)
-        f.close()
+        tmp_file = open(score_path, 'rb')
+        d = pickle.load(tmp_file)
+        tmp_file.close()
         return d
     paths = os.listdir('./resource/spider_files/' + regionCode + '/')
     pss = {}
@@ -164,12 +164,12 @@ def load_province_score():
                         ps.avgScore) + '\n'
                     pss[key] = ps
 
-    f = open(score_path, 'w')  # 文件句柄（放到了内存什么位置）
-    f.write(score_file.encode('utf-8'))  # 写入内容，如果没有该文件就自动创建
-    f.close()  # (关闭文件)
+    tmp_file = open(score_path, 'w')  # 文件句柄（放到了内存什么位置）
+    tmp_file.write(score_file.encode('utf-8'))  # 写入内容，如果没有该文件就自动创建
+    tmp_file.close()  # (关闭文件)
     with open(score_path, 'wb') as pickle_file:
         pickle.dump(pss, pickle_file)
-        pickle_file.close
+        pickle_file.close()
     return pss
 
 
@@ -205,7 +205,7 @@ def load_university_info():
 
     with open(dump_file, 'wb') as pickle_file:
         pickle.dump(university_dict, pickle_file)
-        pickle_file.close
+        pickle_file.close()
     return university_dict
 
 
@@ -276,17 +276,17 @@ def spider_university_score_line(tier):
         wr = ''
         for U in url404:
             wr = wr + U + '\n'
-        f = open('./resource/spider_files/' + regionCode + '_404.url', 'w')  # 文件句柄（放到了内存什么位置）
-        f.write(str(wr))  # 写入内容，如果没有该文件就自动创建
-        f.close()  # (关闭文件)
+        tmp_file = open('./resource/spider_files/' + regionCode + '_404.url', 'w')  # 文件句柄（放到了内存什么位置）
+        tmp_file.write(str(wr))  # 写入内容，如果没有该文件就自动创建
+        tmp_file.close()  # (关闭文件)
 
     if not len(has_spider) == has_spider_size:
         wr = ''
         for U in has_spider:
             wr = wr + U + '\n'
-        f = open('./resource/spider_files/' + regionCode + '_spider.url', 'w')  # 文件句柄（放到了内存什么位置）
-        f.write(str(wr))  # 写入内容，如果没有该文件就自动创建
-        f.close()  # (关闭文件)
+        tmp_file = open('./resource/spider_files/' + regionCode + '_spider.url', 'w')  # 文件句柄（放到了内存什么位置）
+        tmp_file.write(str(wr))  # 写入内容，如果没有该文件就自动创建
+        tmp_file.close()  # (关闭文件)
 
 
 def filter_university():
