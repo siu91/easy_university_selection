@@ -137,7 +137,8 @@ def load_province_score():
             if not os.path.isdir(sFile):
                 if not (subject in sFile): continue
                 print sFile
-                dom = xml.dom.minidom.parse('./resource/spider_files/province_score_line/' + regionCode + '/' + path + '/' + sFile)
+                dom = xml.dom.minidom.parse(
+                    './resource/spider_files/province_score_line/' + regionCode + '/' + path + '/' + sFile)
                 root = dom.documentElement
                 score_elements = root.getElementsByTagName("score")
                 for score_element in score_elements:
@@ -259,27 +260,39 @@ def init_code_region():
 
 def init_spider(path):
     url_set = set()
-    f = open(path)
-    iter_f = iter(f)  # 创建迭代器
-    for line in iter_f:
-        line = ''.join(line.split())
-        url_set.add(line)
+    if os.path.exists(path):
+        f = open(path)
+        iter_f = iter(f)  # 创建迭代器
+        for line in iter_f:
+            line = ''.join(line.split())
+            url_set.add(line)
 
     return url_set
 
 
 # 抓取大学专业分
 def spider_university_major_score_line():
-    return
+    spider_score_line('./resource/spider_files/major_score_line/',
+                      'http://gkcx.eol.cn/commonXML/schoolSpecialPoint/schoolSpecialPoint', 'schoolSpecialPoint', '')
 
 
 # 抓取大学省录取分
 def spider_university_province_score_line(tier):
-    url404 = init_spider('./resource/spider_files/province_score_line/' + regionCode + '_404.url')
-    has_spider = init_spider('./resource/spider_files/province_score_line/' + regionCode + '_spider.url')
+    spider_score_line('./resource/spider_files/province_score_line/',
+                      'http://gkcx.eol.cn/schoolhtm/scores/provinceScores', 'provinceScores', tier)
+
+
+def spider_score_line(save_path, spider_url, xml_name, tier):
+    url404 = init_spider(save_path + regionCode + '_404.url')
+    has_spider = init_spider(save_path + regionCode + '_spider.url')
     url404_size = len(url404)
     has_spider_size = len(has_spider)
-    url_base = 'http://gkcx.eol.cn/schoolhtm/scores/provinceScores[university_code]_' + regionCode + '_' + subject + '_' + tier + '.xml'
+    if '' == tier:
+        file_suffix = '.xml'
+    else:
+        file_suffix = '_' + tier + '.xml'
+
+    url_base = spider_url + '[university_code]_' + regionCode + '_' + subject + file_suffix
     for k in universityInfoDict:
         url = url_base.replace('[university_code]', universityInfoDict[k].code)
         if url in url404: continue
@@ -287,26 +300,24 @@ def spider_university_province_score_line(tier):
         print url
         req = urllib2.Request(url)
         res_data = urllib2.urlopen(req)
-        # print res_data.url
         if "http://gkcx.eol.cn/404.htm" == res_data.url:
             url404.add(url)
             continue
         has_spider.add(url)
         res = res_data.read()
-        path = './resource/spider_files/province_score_line/' + regionCode + '/' + universityInfoDict[k].code
+        path = save_path + regionCode + '/' + universityInfoDict[k].code
         if not os.path.exists(path): os.makedirs(path)
         xml_file = open(
-            path + '/provinceScores' + universityInfoDict[
-                k].code + '_' + regionCode + '_' + subject + '_' + tier + '.xml', 'w')
+            path + '/' + xml_name + universityInfoDict[
+                k].code + '_' + regionCode + '_' + subject + file_suffix, 'w')
         xml_file.write(res)
         xml_file.close()
-        # print res
 
     if not len(url404) == url404_size:
         wr = ''
         for U in url404:
             wr = wr + U + '\n'
-        tmp_file = open('./resource/spider_files/province_score_line/' + regionCode + '_404.url', 'w')
+        tmp_file = open(save_path + regionCode + '_404.url', 'w')
         tmp_file.write(str(wr))  # 写入内容，如果没有该文件就自动创建
         tmp_file.close()  # (关闭文件)
 
@@ -314,7 +325,7 @@ def spider_university_province_score_line(tier):
         wr = ''
         for U in has_spider:
             wr = wr + U + '\n'
-        tmp_file = open('./resource/spider_files/province_score_line/' + regionCode + '_spider.url', 'w')
+        tmp_file = open(save_path + regionCode + '_spider.url', 'w')
         tmp_file.write(str(wr))  # 写入内容，如果没有该文件就自动创建
         tmp_file.close()  # (关闭文件)
 
@@ -528,6 +539,9 @@ if __name__ == "__main__":
     print '本三批次抓取完成'
     spider_university_province_score_line('10148')
     print '高职专科批次抓取完成'
+    print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+    print '抓取高校库中所有高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']专业分数线'
+    spider_university_major_score_line()
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
     # 历年分数线
     print '载入[' + codeRegionDict[regionCode] + ']地区历年高考划线'
