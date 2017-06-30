@@ -96,8 +96,8 @@ def load_score_line(code, region):
     return sls
 
 
-def load_province_score(regionCode, artsOrScienceCode):
-    scorePath = './resource/spider_files/' + regionCode + '_' + artsOrScienceCode + '.dump'
+def load_province_score(regionCode, subject):
+    scorePath = './resource/spider_files/' + regionCode + '_' + subject + '.dump'
     scoreFile = ''
     if os.path.exists(scorePath):
         f = open(scorePath, 'rb')
@@ -110,7 +110,7 @@ def load_province_score(regionCode, artsOrScienceCode):
         files = os.listdir('./resource/spider_files/' + regionCode + '/' + path)
         for file in files:
             if not os.path.isdir(file):
-                if not artsOrScienceCode in file: continue
+                if not subject in file: continue
                 print file
                 dom = xml.dom.minidom.parse('./resource/spider_files/' + regionCode + '/' + path + '/' + file)
                 root = dom.documentElement
@@ -156,10 +156,10 @@ def load_province_score(regionCode, artsOrScienceCode):
                     ps.tier = tierCode
                     ps.region = regionCode
                     ps.school = path
-                    ps.subject = artsOrScienceCode
+                    ps.subject = subject
 
                     # 学校 年份 福建 文科 批次 = 清华大学2016年在福建地区文科第一批次招生分数线
-                    key = path + ',' + year + ',' + regionCode + ',' + artsOrScienceCode + ',' + tierCode
+                    key = path + ',' + year + ',' + regionCode + ',' + subject + ',' + tierCode
                     scoreFile = scoreFile + key + ',' + str(ps.maxScore) + ',' + str(ps.minScore) + ',' + str(
                         ps.avgScore) + '\n'
                     pss[key] = ps
@@ -450,13 +450,13 @@ if __name__ == "__main__":
         filterTier = sys.argv[5].split(',')
 
     regionCode = sys.argv[1]  # region_code 行政区代码
-    artsOrScienceCode = sys.argv[2]  # arts_or_science_code 文理科
+    subject = sys.argv[2]  # arts_or_science_code 文理科
     score = int(sys.argv[3])  # 考生分数
     year = sys.argv[4]  # 年份
     # tierCode = sys.argv[3]  # tier_code 本科层次（一本，二本，三本，提前，专科）
     print '年份：' + year
     print '地区：' + codeRegionDict[regionCode]
-    print '分数：' + sys.argv[3] + ' ' + customCodeDict[artsOrScienceCode]
+    print '分数：' + sys.argv[3] + ' ' + customCodeDict[subject]
     if not filterTier == '':
         for f in filterTier:
             print '过滤：' + customCodeDict[f]
@@ -465,14 +465,14 @@ if __name__ == "__main__":
     codeRegionDict = init_code_region()
     customCodeDict = initCustomCode()
     universityInfoDict = load_university_info(regionCodeDict)
-    print '抓取高校库中所有高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[artsOrScienceCode] + ']招生分数线'
-    spider_university_score_line(universityInfoDict, regionCode, artsOrScienceCode, '10036')
+    print '抓取高校库中所有高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']招生分数线'
+    spider_university_score_line(universityInfoDict, regionCode, subject, '10036')
     print '本一批次抓取完成'
-    spider_university_score_line(universityInfoDict, regionCode, artsOrScienceCode, '10037')
+    spider_university_score_line(universityInfoDict, regionCode, subject, '10037')
     print '本二批次抓取完成'
-    spider_university_score_line(universityInfoDict, regionCode, artsOrScienceCode, '10038')
+    spider_university_score_line(universityInfoDict, regionCode, subject, '10038')
     print '本三批次抓取完成'
-    spider_university_score_line(universityInfoDict, regionCode, artsOrScienceCode, '10148')
+    spider_university_score_line(universityInfoDict, regionCode, subject, '10148')
     print '高职专科批次抓取完成'
     # spider_university_score_line(universityInfoDict, '10024', '10034', '10036')
 
@@ -480,10 +480,10 @@ if __name__ == "__main__":
     print '载入[' + codeRegionDict[regionCode] + ']地区' + '历年高考分数线'
     scoreLines = load_score_line(regionCode, regionCodeDict)
     # 各学校入取分数
-    print '载入全国高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[artsOrScienceCode] + ']历年录取分数线'
-    provinceScores = load_province_score(regionCode, artsOrScienceCode)
+    print '载入全国高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']历年录取分数线'
+    provinceScores = load_province_score(regionCode, subject)
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
-    universityList = filterUniversity(year, regionCode, artsOrScienceCode, score, scoreLines, provinceScores,
+    universityList = filterUniversity(year, regionCode, subject, score, scoreLines, provinceScores,
                                       universityInfoDict)
 
     print '筛选结果如下，结果将保存到./resource/result.xlsx'
