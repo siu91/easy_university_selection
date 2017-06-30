@@ -55,11 +55,11 @@ class UniversityInfo:
 
 
 # 载入所有年份的分数线
-def load_score_line(code, region):
-    files = os.listdir('./resource/score_line/' + code)
+def load_score_line():
+    files = os.listdir('./resource/score_line/' + regionCode)
     sls = {}  # year:region:subject:tier score
-    for file in files:
-        f = open('./resource/score_line/' + code + '/' + file)
+    for sFile in files:
+        f = open('./resource/score_line/' + regionCode + '/' + sFile)
         iter_f = iter(f)  # 创建迭代器
         for line in iter_f:
             line = ''.join(line.split())
@@ -67,7 +67,7 @@ def load_score_line(code, region):
             if len(arr) < 4: continue
             sl = ScoreLine()
             sl.year = arr[0]
-            sl.region = region[arr[1]]
+            sl.region = regionCodeDict[arr[1]]
             if arr[2] == '理科':
                 sl.subject = '10035'
             elif arr[2] == '文科':
@@ -87,7 +87,7 @@ def load_score_line(code, region):
                 continue
 
             # 专为福建没有三本特殊处理
-            if code == '10024':
+            if regionCode == '10024':
                 if sl.tier == '10148':
                     sl.tier = '10038'
 
@@ -96,11 +96,11 @@ def load_score_line(code, region):
     return sls
 
 
-def load_province_score(regionCode, subject):
-    scorePath = './resource/spider_files/' + regionCode + '_' + subject + '.dump'
-    scoreFile = ''
-    if os.path.exists(scorePath):
-        f = open(scorePath, 'rb')
+def load_province_score():
+    score_path = './resource/spider_files/' + regionCode + '_' + subject + '.dump'
+    score_file = ''
+    if os.path.exists(score_path):
+        f = open(score_path, 'rb')
         d = pickle.load(f)
         f.close()
         return d
@@ -108,76 +108,76 @@ def load_province_score(regionCode, subject):
     pss = {}
     for path in paths:
         files = os.listdir('./resource/spider_files/' + regionCode + '/' + path)
-        for file in files:
-            if not os.path.isdir(file):
-                if not subject in file: continue
-                print file
-                dom = xml.dom.minidom.parse('./resource/spider_files/' + regionCode + '/' + path + '/' + file)
+        for sFile in files:
+            if not os.path.isdir(sFile):
+                if not subject in sFile: continue
+                print sFile
+                dom = xml.dom.minidom.parse('./resource/spider_files/' + regionCode + '/' + path + '/' + sFile)
                 root = dom.documentElement
                 scores = root.getElementsByTagName("score")
                 for score in scores:
                     # print score.nodeName
                     # print score.toxml()
-                    yearNode = score.getElementsByTagName("year")[0]
+                    year_node = score.getElementsByTagName("year")[0]
                     year = ''
-                    if len(yearNode.childNodes) > 0: year = yearNode.childNodes[0].nodeValue
+                    if len(year_node.childNodes) > 0: year = year_node.childNodes[0].nodeValue
                     # print (yearNode.childNodes)
-                    maxScoreNode = score.getElementsByTagName("maxScore")[0]
-                    maxScore = ''
-                    if len(maxScoreNode.childNodes) > 0: maxScore = maxScoreNode.childNodes[0].nodeValue
-                    minScoreNode = score.getElementsByTagName("minScore")[0]
-                    minScore = ''
-                    if len(minScoreNode.childNodes) > 0: minScore = minScoreNode.childNodes[0].nodeValue
-                    avgScoreNode = score.getElementsByTagName("avgScore")[0]
-                    avgScore = ''
-                    if len(avgScoreNode.childNodes) > 0: avgScore = avgScoreNode.childNodes[0].nodeValue
-                    tierNode = score.getElementsByTagName("rb")[0]
+                    max_score_node = score.getElementsByTagName("maxScore")[0]
+                    max_score = ''
+                    if len(max_score_node.childNodes) > 0: max_score = max_score_node.childNodes[0].nodeValue
+                    min_score_node = score.getElementsByTagName("minScore")[0]
+                    min_score = ''
+                    if len(min_score_node.childNodes) > 0: min_score = min_score_node.childNodes[0].nodeValue
+                    avg_score_node = score.getElementsByTagName("avgScore")[0]
+                    avg_score = ''
+                    if len(avg_score_node.childNodes) > 0: avg_score = avg_score_node.childNodes[0].nodeValue
+                    tier_node = score.getElementsByTagName("rb")[0]
                     tier = ''
-                    if len(tierNode.childNodes) > 0: tier = tierNode.childNodes[0].nodeValue
+                    if len(tier_node.childNodes) > 0: tier = tier_node.childNodes[0].nodeValue
                     ps = ProvinceScore()
                     if not ('--' == year or '' == year): ps.year = int(year)
-                    if not ('--' == maxScore or '' == maxScore): ps.maxScore = int(maxScore[0:3])
-                    if not ('--' == minScore or '' == minScore): ps.minScore = int(minScore[0:3])
-                    if not ('--' == avgScore or '' == avgScore): ps.avgScore = int(avgScore[0:3])
+                    if not ('--' == max_score or '' == max_score): ps.maxScore = int(max_score[0:3])
+                    if not ('--' == min_score or '' == min_score): ps.minScore = int(min_score[0:3])
+                    if not ('--' == avg_score or '' == avg_score): ps.avgScore = int(avg_score[0:3])
                     tier = tier.encode('utf-8')
 
-                    tierCode = ''
+                    tier_code = ''
                     if '一' in tier:
-                        tierCode = '10036'
+                        tier_code = '10036'
                     elif '二' in tier:
-                        tierCode = '10037'
+                        tier_code = '10037'
                     elif '三' in tier:
-                        tierCode = '10038'
+                        tier_code = '10038'
                     elif '专' in tier:
-                        tierCode = '10148'
+                        tier_code = '10148'
                     else:
                         continue
 
-                    ps.tier = tierCode
+                    ps.tier = tier_code
                     ps.region = regionCode
                     ps.school = path
                     ps.subject = subject
 
                     # 学校 年份 福建 文科 批次 = 清华大学2016年在福建地区文科第一批次招生分数线
-                    key = path + ',' + year + ',' + regionCode + ',' + subject + ',' + tierCode
-                    scoreFile = scoreFile + key + ',' + str(ps.maxScore) + ',' + str(ps.minScore) + ',' + str(
+                    key = path + ',' + year + ',' + regionCode + ',' + subject + ',' + tier_code
+                    score_file = score_file + key + ',' + str(ps.maxScore) + ',' + str(ps.minScore) + ',' + str(
                         ps.avgScore) + '\n'
                     pss[key] = ps
 
-    f = open(scorePath, 'w')  # 文件句柄（放到了内存什么位置）
-    f.write(scoreFile.encode('utf-8'))  # 写入内容，如果没有该文件就自动创建
+    f = open(score_path, 'w')  # 文件句柄（放到了内存什么位置）
+    f.write(score_file.encode('utf-8'))  # 写入内容，如果没有该文件就自动创建
     f.close()  # (关闭文件)
-    with open(scorePath, 'wb') as pickle_file:
+    with open(score_path, 'wb') as pickle_file:
         pickle.dump(pss, pickle_file)
         pickle_file.close
     return pss
 
 
-def load_university_info(region):
-    dumpFile = './resource/university_info.dump'
-    universityDict = {}
-    if os.path.exists(dumpFile):
-        f = open(dumpFile, 'rb')
+def load_university_info():
+    dump_file = './resource/university_info.dump'
+    university_dict = {}
+    if os.path.exists(dump_file):
+        f = open(dump_file, 'rb')
         d = pickle.load(f)
         f.close()
         return d
@@ -194,66 +194,66 @@ def load_university_info(region):
         university.latitude = arr[1]
         university.name = arr[2]
         university.region = arr[3]
-        university.regionCode = region[arr[3]]
+        university.regionCode = regionCodeDict[arr[3]]
         university.level = arr[4]
         university.hot = arr[5]
         university.classes = arr[6]
         university.classRank = arr[7]
         university.web = arr[8]
         university.code = arr[9]
-        universityDict[arr[9]] = university
+        university_dict[arr[9]] = university
 
-    with open(dumpFile, 'wb') as pickle_file:
-        pickle.dump(universityDict, pickle_file)
+    with open(dump_file, 'wb') as pickle_file:
+        pickle.dump(university_dict, pickle_file)
         pickle_file.close
-    return universityDict
+    return university_dict
 
 
 def init_region_code():
-    regionCode = {}
+    region_code = {}
     f = open('./resource/region_code.csv')
     iter_f = iter(f)  # 创建迭代器
     for line in iter_f:
         line = ''.join(line.split())
         arr = line.split(',')
-        regionCode[arr[0]] = arr[1]
+        region_code[arr[0]] = arr[1]
 
-    return regionCode
+    return region_code
 
 
 def init_code_region():
-    regionCode = {}
+    region_code = {}
     f = open('./resource/region_code.csv')
     iter_f = iter(f)  # 创建迭代器
     for line in iter_f:
         line = ''.join(line.split())
         arr = line.split(',')
-        regionCode[arr[1]] = arr[0]
+        region_code[arr[1]] = arr[0]
 
-    return regionCode
+    return region_code
 
 
 def init_spider(path):
-    urlSet = set()
+    url_set = set()
     f = open(path)
     iter_f = iter(f)  # 创建迭代器
     for line in iter_f:
         line = ''.join(line.split())
-        urlSet.add(line)
+        url_set.add(line)
 
-    return urlSet
+    return url_set
 
 
 def spider_university_score_line(universityInfo, regionCode, subject, tier):
     url404 = init_spider('./resource/spider_files/' + regionCode + '_404.url')
-    hasSpider = init_spider('./resource/spider_files/' + regionCode + '_spider.url')
+    has_spider = init_spider('./resource/spider_files/' + regionCode + '_spider.url')
     url404Size = len(url404)
-    hasSpiderSize = len(hasSpider)
-    urlBase = 'http://gkcx.eol.cn/schoolhtm/scores/provinceScores[university_code]_' + regionCode + '_' + subject + '_' + tier + '.xml'
+    has_spider_size = len(has_spider)
+    url_base = 'http://gkcx.eol.cn/schoolhtm/scores/provinceScores[university_code]_' + regionCode + '_' + subject + '_' + tier + '.xml'
     for k in universityInfo:
-        url = urlBase.replace('[university_code]', universityInfo[k].code)
+        url = url_base.replace('[university_code]', universityInfo[k].code)
         if url in url404: continue
-        if url in hasSpider: continue
+        if url in has_spider: continue
         print url
         req = urllib2.Request(url)
         res_data = urllib2.urlopen(req)
@@ -261,44 +261,44 @@ def spider_university_score_line(universityInfo, regionCode, subject, tier):
         if "http://gkcx.eol.cn/404.htm" == res_data.url:
             url404.add(url)
             continue
-        hasSpider.add(url)
+        has_spider.add(url)
         res = res_data.read()
         path = './resource/spider_files/' + regionCode + '/' + universityInfo[k].code
         if not os.path.exists(path): os.makedirs(path)
-        xmlFile = open(
+        xml_file = open(
             path + '/provinceScores' + universityInfo[
                 k].code + '_' + regionCode + '_' + subject + '_' + tier + '.xml', 'w')
-        xmlFile.write(res)
-        xmlFile.close()
+        xml_file.write(res)
+        xml_file.close()
         # print res
 
     if not len(url404) == url404Size:
         wr = ''
-        for u in url404:
-            wr = wr + u + '\n'
+        for U in url404:
+            wr = wr + U + '\n'
         f = open('./resource/spider_files/' + regionCode + '_404.url', 'w')  # 文件句柄（放到了内存什么位置）
         f.write(str(wr))  # 写入内容，如果没有该文件就自动创建
         f.close()  # (关闭文件)
 
-    if not len(hasSpider) == hasSpiderSize:
+    if not len(has_spider) == has_spider_size:
         wr = ''
-        for u in hasSpider:
-            wr = wr + u + '\n'
+        for U in has_spider:
+            wr = wr + U + '\n'
         f = open('./resource/spider_files/' + regionCode + '_spider.url', 'w')  # 文件句柄（放到了内存什么位置）
         f.write(str(wr))  # 写入内容，如果没有该文件就自动创建
         f.close()  # (关闭文件)
 
 
-def filterUniversity(year, region, subject, score, scoreLines, provinceScores, universityInfoDict):
+def filter_university():
     # 换算该学生在往年的分数
     # 粗暴的算法
     # 计算 考生的分数在今年高考划线的比值
     # 如 该生文科393 ，2017 划线 489,380,300 ，比值分别是393/489=0.803,393/380=1.034,393/300=1.31
     # 2016 年 划线 501,403,319,评估得分为(501*0.803+403*1.034+319*1.31)/3=412.3,评估该生在2016分数为412.3
-    year = int(year)
-    score1 = scoreLines[str(year) + ',' + region + ',' + subject + ',10036'].score
-    score2 = scoreLines[str(year) + ',' + region + ',' + subject + ',10037'].score
-    score3 = scoreLines[str(year) + ',' + region + ',' + subject + ',10038'].score
+    year_int = int(year)
+    score1 = scoreLines[str(year_int) + ',' + regionCode + ',' + subject + ',10036'].score
+    score2 = scoreLines[str(year_int) + ',' + regionCode + ',' + subject + ',10037'].score
+    score3 = scoreLines[str(year_int) + ',' + regionCode + ',' + subject + ',10038'].score
     tier = ''
     if score > score3:
         tier = '10038'
@@ -315,67 +315,67 @@ def filterUniversity(year, region, subject, score, scoreLines, provinceScores, u
     rate3 = score / float(score3)  # 福建地区没有三本划线，取专科划线
 
     # 改进算法，分数所在批次权重为0.7,其他为0.15
-    last1 = evaluate_score(year, region, subject, tier, 1, rate1, rate2, rate3)
-    print '评估' + str(year - 1) + '分数为：' + str(last1)
-    last2 = evaluate_score(year, region, subject, tier, 2, rate1, rate2, rate3)
-    print '评估' + str(year - 2) + '分数为：' + str(last2)
-    last3 = evaluate_score(year, region, subject, tier, 3, rate1, rate2, rate3)
-    print '评估' + str(year - 3) + '分数为：' + str(last3)
+    last1 = evaluate_score(year_int, regionCode, subject, tier, 1, rate1, rate2, rate3)
+    print '评估' + str(year_int - 1) + '分数为：' + str(last1)
+    last2 = evaluate_score(year_int, regionCode, subject, tier, 2, rate1, rate2, rate3)
+    print '评估' + str(year_int - 2) + '分数为：' + str(last2)
+    last3 = evaluate_score(year_int, regionCode, subject, tier, 3, rate1, rate2, rate3)
+    print '评估' + str(year_int - 3) + '分数为：' + str(last3)
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 
     result = []
-    schoolSet = set()
+    school_set = set()
     for k in provinceScores:
         ps = provinceScores[k]
-        isFilter = True
-        if ps.school in schoolSet: continue
+        is_filter = True
+        if ps.school in school_set: continue
         if not ps.subject == subject: continue
         if ps.minScore == 0 and ps.avgScore == 0 and ps.maxScore == 0: continue
         hope = 0
         if not ps.minScore == 0:
-            if ps.year == year - 1:
+            if ps.year == year_int - 1:
                 if last1 > ps.minScore:
-                    isFilter = False
+                    is_filter = False
                     hope = 3
-            elif ps.year == year - 2:
+            elif ps.year == year_int - 2:
                 if last2 > ps.minScore:
-                    isFilter = False
+                    is_filter = False
                     hope = 2
-            elif ps.year == year - 3:
+            elif ps.year == year_int - 3:
                 if last3 > ps.minScore:
-                    isFilter = False
+                    is_filter = False
                     hope = 1
 
         if not ps.avgScore == 0:
-            if ps.year == year - 1:
+            if ps.year == year_int - 1:
                 if last1 > ps.avgScore:
-                    isFilter = False
+                    is_filter = False
                     hope = 6
-            elif ps.year == year - 2:
+            elif ps.year == year_int - 2:
                 if last2 > ps.avgScore:
-                    isFilter = False
+                    is_filter = False
                     hope = 5
-            elif ps.year == year - 3:
+            elif ps.year == year_int - 3:
                 if last3 > ps.avgScore:
-                    isFilter = False
+                    is_filter = False
                     hope = 4
 
         if not ps.maxScore == 0:
-            if ps.year == year - 1:
+            if ps.year == year_int - 1:
                 if last1 > ps.maxScore:
-                    isFilter = False
+                    is_filter = False
                     hope = 9
-            elif ps.year == year - 2:
+            elif ps.year == year_int - 2:
                 if last2 > ps.maxScore:
-                    isFilter = False
+                    is_filter = False
                     hope = 8
-            elif ps.year == year - 3:
+            elif ps.year == year_int - 3:
                 if last3 > ps.maxScore:
-                    isFilter = False
+                    is_filter = False
                     hope = 7
 
-        if isFilter: continue
-        schoolSet.add(ps.school + str(ps.year))
+        if is_filter: continue
+        school_set.add(ps.school + str(ps.year))
         ps.hope = hope
         ps.hot = universityInfoDict[ps.school].hot
         result.append(ps)
@@ -407,7 +407,7 @@ def evaluate_score(year, region, subject, tier, n, rate1, rate2, rate3):
     return last1score1 + last1score2 + last1score3
 
 
-def initCustomCode():
+def init_custom_code():
     code = {}
     code['10035'] = '理科'
     code['10034'] = '文科'
@@ -441,7 +441,7 @@ def help(region):
 if __name__ == "__main__":
     regionCodeDict = init_region_code()
     codeRegionDict = init_code_region()
-    customCodeDict = initCustomCode()
+    customCodeDict = init_custom_code()
     # print str(len(sys.argv))
     if len(sys.argv) < 5:
         help(regionCodeDict)
@@ -461,10 +461,8 @@ if __name__ == "__main__":
         for f in filterTier:
             print '过滤：' + customCodeDict[f]
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
-    regionCodeDict = init_region_code()
-    codeRegionDict = init_code_region()
-    customCodeDict = initCustomCode()
-    universityInfoDict = load_university_info(regionCodeDict)
+
+    universityInfoDict = load_university_info()
     print '抓取高校库中所有高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']招生分数线'
     spider_university_score_line(universityInfoDict, regionCode, subject, '10036')
     print '本一批次抓取完成'
@@ -478,13 +476,12 @@ if __name__ == "__main__":
 
     # 历年分数线
     print '载入[' + codeRegionDict[regionCode] + ']地区' + '历年高考分数线'
-    scoreLines = load_score_line(regionCode, regionCodeDict)
+    scoreLines = load_score_line()
     # 各学校入取分数
     print '载入全国高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']历年录取分数线'
-    provinceScores = load_province_score(regionCode, subject)
+    provinceScores = load_province_score()
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
-    universityList = filterUniversity(year, regionCode, subject, score, scoreLines, provinceScores,
-                                      universityInfoDict)
+    universityList = filter_university()
 
     print '筛选结果如下，结果将保存到./resource/result.xlsx'
     print '-----------------------------------------------------------------------------------------------------'
