@@ -408,7 +408,7 @@ def evaluate_score(year, region, subject, tier, n, rate1, rate2, rate3):
     if '' == tier:
         last1score1 = scoreLines[str(year - n) + ',' + region + ',' + subject + ',10036'].score * rate1 * 0.3
         last1score2 = scoreLines[str(year - n) + ',' + region + ',' + subject + ',10037'].score * rate2 * 0.3
-        last1score3 = scoreLines[str(year - n) + ',' + region + ',' + subject + ',10038'].score * rate3 * 0.35
+        last1score3 = scoreLines[str(year - n) + ',' + region + ',' + subject + ',10038'].score * rate3 * 0.4
 
     return last1score1 + last1score2 + last1score3
 
