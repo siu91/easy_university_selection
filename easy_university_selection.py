@@ -427,7 +427,7 @@ def spider_score_line(save_path, spider_url, xml_name, tier, info):
         tmp_file = open(save_path + regionCode + '_spider.url', 'w')
         tmp_file.write(str(wr))  # 写入内容，如果没有该文件就自动创建
         tmp_file.close()  # (关闭文件)
-    print info + '抓取完成,共抓取' + str(count) + '条数据'
+    print info + '抓取完成,共抓取' + str(count) + '个文件'
 
 
 # 筛选高校
