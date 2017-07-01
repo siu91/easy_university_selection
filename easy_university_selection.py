@@ -30,6 +30,7 @@ from xml.dom.minidom import parse
 import xml.dom.minidom
 from openpyxl import Workbook
 import pickle
+import time
 
 
 # 分数划线
@@ -596,10 +597,11 @@ def save(title, university, xlsx):
 
 
 def save_xlsx():
+    t = str(time.time())
     save('学校\t地区\t类别\t类别排名\t热度排名\t录取成功预测值（1-9）\t 最高分\t最低分\t平均分\t批次\t年份', universityListByProvinceScore,
-         './resource/result_by_province_score.xlsx')
+         './resource/result/result_by_province_score' + t[0:10] + '.xlsx')
     save('学校\t专业\t地区\t类别\t类别排名\t热度排名\t录取成功预测值（1-9）\t 最高分\t最低分\t平均分\t批次\t年份', universityListByMajorScore,
-         './resource/result_by_major_score.xlsx')
+         './resource/result/result_by_major_score' + t[0:10] + '.xlsx')
 
 
 def init_custom_code():
