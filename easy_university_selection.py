@@ -268,6 +268,7 @@ def load_province_score():
                     if len(tier_node.childNodes) > 0: tier = tier_node.childNodes[0].nodeValue
                     ps = ProvinceScore()
                     if not ('--' == y or '' == y): ps.year = int(y)
+                    if ps.year < int(year) - 3: continue
                     if not ('--' == max_score or '' == max_score): ps.maxScore = int(max_score[0:3])
                     if not ('--' == min_score or '' == min_score): ps.minScore = int(min_score[0:3])
                     if not ('--' == avg_score or '' == avg_score): ps.avgScore = int(avg_score[0:3])
@@ -281,6 +282,8 @@ def load_province_score():
                         tier_code = '10038'
                     elif '专' in tier:
                         tier_code = '10148'
+                    elif '提前' in tier:
+                        tier_code = '10149'
                     else:
                         continue
 
@@ -366,16 +369,17 @@ def init_spider(path):
 # 抓取大学专业分
 def spider_university_major_score_line(info):
     spider_score_line('./resource/spider_files/major_score_line/',
-                      'http://gkcx.eol.cn/commonXML/schoolSpecialPoint/schoolSpecialPoint', 'schoolSpecialPoint', '',info)
+                      'http://gkcx.eol.cn/commonXML/schoolSpecialPoint/schoolSpecialPoint', 'schoolSpecialPoint', '',
+                      info)
 
 
 # 抓取大学省录取分
-def spider_university_province_score_line(tier,info):
+def spider_university_province_score_line(tier, info):
     spider_score_line('./resource/spider_files/province_score_line/',
-                      'http://gkcx.eol.cn/schoolhtm/scores/provinceScores', 'provinceScores', tier,info)
+                      'http://gkcx.eol.cn/schoolhtm/scores/provinceScores', 'provinceScores', tier, info)
 
 
-def spider_score_line(save_path, spider_url, xml_name, tier,info):
+def spider_score_line(save_path, spider_url, xml_name, tier, info):
     count = 0
     url404 = init_spider(save_path + regionCode + '_404.url')
     has_spider = init_spider(save_path + regionCode + '_spider.url')
@@ -590,7 +594,7 @@ def save(title, university, xlsx):
                       universityInfoDict[u.school].classes + '\t' + str(
             universityInfoDict[u.school].classRank) + '\t' + str(u.hot) + '\t' + str(u.hope) + '\t' + str(
             u.maxScore) + '\t' + str(u.minScore) + '\t' + str(u.avgScore) + '\t' + customCodeDict[u.tier] + '\t' + str(
-            u.year)
+            u.year) + '\t' + str(evaluate_score[u.year])[0:5]
 
         print col_content
         row_values = col_content.split('\t')
@@ -603,9 +607,9 @@ def save(title, university, xlsx):
 
 def save_xlsx():
     t = str(time.time())
-    save('学校\t地区\t类别\t类别排名\t热度排名\t录取成功预测值（1-9）\t 最高分\t最低分\t平均分\t批次\t年份', universityListByProvinceScore,
+    save('学校\t地区\t类别\t类别排名\t热度排名\t录取成功预测值（1-9）\t 最高分\t最低分\t平均分\t批次\t年份\t考生评估分数', universityListByProvinceScore,
          './resource/result/result_by_province_score' + t[0:10] + '.xlsx')
-    save('学校\t专业\t地区\t类别\t类别排名\t热度排名\t录取成功预测值（1-9）\t 最高分\t最低分\t平均分\t批次\t年份', universityListByMajorScore,
+    save('学校\t专业\t地区\t类别\t类别排名\t热度排名\t录取成功预测值（1-9）\t 最高分\t最低分\t平均分\t批次\t年份\t考生评估分数', universityListByMajorScore,
          './resource/result/result_by_major_score' + t[0:10] + '.xlsx')
 
 
@@ -667,10 +671,11 @@ if __name__ == "__main__":
     print '加载高校库完成，共有' + str(len(universityInfoDict)) + '所高校信息载入'
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
     print '抓取高校库中所有高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']招生分数线'
-    spider_university_province_score_line('10036','本一批次')
-    spider_university_province_score_line('10037','本二批次')
-    spider_university_province_score_line('10038','本三批次')
-    spider_university_province_score_line('10148','高职专科批次')
+    spider_university_province_score_line('10036', '本一批次')
+    spider_university_province_score_line('10037', '本二批次')
+    spider_university_province_score_line('10038', '本三批次')
+    spider_university_province_score_line('10148', '高职专科批次')
+    spider_university_province_score_line('10149', '提前批次')
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
     print '抓取高校库中所有高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']专业分数线'
     spider_university_major_score_line('')
