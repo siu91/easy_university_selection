@@ -148,6 +148,7 @@ def load_major_score():
         tmp_file = open(score_path, 'rb')
         d = pickle.load(tmp_file)
         tmp_file.close()
+        print '共加载' + str(len(d)) + '条专业分数线数据'
         return d
     paths = os.listdir('./resource/spider_files/major_score_line/' + regionCode + '/')
     pss = {}
@@ -233,6 +234,7 @@ def load_province_score():
         tmp_file = open(score_path, 'rb')
         d = pickle.load(tmp_file)
         tmp_file.close()
+        print '共加载' + str(len(d)) + '条省录取分数线数据'
         return d
     paths = os.listdir('./resource/spider_files/province_score_line/' + regionCode + '/')
     pss = {}
@@ -362,18 +364,19 @@ def init_spider(path):
 
 
 # 抓取大学专业分
-def spider_university_major_score_line():
+def spider_university_major_score_line(info):
     spider_score_line('./resource/spider_files/major_score_line/',
-                      'http://gkcx.eol.cn/commonXML/schoolSpecialPoint/schoolSpecialPoint', 'schoolSpecialPoint', '')
+                      'http://gkcx.eol.cn/commonXML/schoolSpecialPoint/schoolSpecialPoint', 'schoolSpecialPoint', '',info)
 
 
 # 抓取大学省录取分
-def spider_university_province_score_line(tier):
+def spider_university_province_score_line(tier,info):
     spider_score_line('./resource/spider_files/province_score_line/',
-                      'http://gkcx.eol.cn/schoolhtm/scores/provinceScores', 'provinceScores', tier)
+                      'http://gkcx.eol.cn/schoolhtm/scores/provinceScores', 'provinceScores', tier,info)
 
 
-def spider_score_line(save_path, spider_url, xml_name, tier):
+def spider_score_line(save_path, spider_url, xml_name, tier,info):
+    count = 0
     url404 = init_spider(save_path + regionCode + '_404.url')
     has_spider = init_spider(save_path + regionCode + '_spider.url')
     url404_size = len(url404)
@@ -387,6 +390,7 @@ def spider_score_line(save_path, spider_url, xml_name, tier):
     for k in universityInfoDict:
         url = url_base.replace('[university_code]', universityInfoDict[k].code)
         if url in url404: continue
+        count = count + 1
         if url in has_spider: continue
         print url
         req = urllib2.Request(url)
@@ -419,6 +423,7 @@ def spider_score_line(save_path, spider_url, xml_name, tier):
         tmp_file = open(save_path + regionCode + '_spider.url', 'w')
         tmp_file.write(str(wr))  # 写入内容，如果没有该文件就自动创建
         tmp_file.close()  # (关闭文件)
+    print info + '抓取完成,共抓取' + str(count) + '条数据'
 
 
 # 筛选高校
@@ -662,17 +667,13 @@ if __name__ == "__main__":
     print '加载高校库完成，共有' + str(len(universityInfoDict)) + '所高校信息载入'
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
     print '抓取高校库中所有高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']招生分数线'
-    spider_university_province_score_line('10036')
-    print '本一批次抓取完成'
-    spider_university_province_score_line('10037')
-    print '本二批次抓取完成'
-    spider_university_province_score_line('10038')
-    print '本三批次抓取完成'
-    spider_university_province_score_line('10148')
-    print '高职专科批次抓取完成'
+    spider_university_province_score_line('10036','本一批次')
+    spider_university_province_score_line('10037','本二批次')
+    spider_university_province_score_line('10038','本三批次')
+    spider_university_province_score_line('10148','高职专科批次')
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
     print '抓取高校库中所有高校在[' + codeRegionDict[regionCode] + ']地区[' + customCodeDict[subject] + ']专业分数线'
-    spider_university_major_score_line()
+    spider_university_major_score_line('')
     print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
     print '载入[' + codeRegionDict[regionCode] + ']地区历年高考划线'
     scoreLines = load_score_line()  # 历年分数线
