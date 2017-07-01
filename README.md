@@ -39,7 +39,8 @@
    - 考生3分数为 354（高于最低分），算出2016年的样本数据入取预测值为3,2015年为1,2014年为1
 
 ## 结果
-![图](resource/images/result.JPG)
+![图](resource/images/result_by_province_score.jpg)
+![图](resource/images/result_by_major_score.jpg)
 
 ## 其他定义
  10035 理科
